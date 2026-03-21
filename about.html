@@ -1,0 +1,587 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>About Us — Nexos Digital Solutions</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=Space+Grotesk:wght@400;500;600;700&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --void-black: #0A0A0A;
+      --dark-surface: #161B22;
+      --platinum-silver: #C8D0D8;
+      --signal-teal: #3DDBB8;
+      --electric-blue: #45A8E6;
+      --brand-gradient: linear-gradient(135deg, #3DDBB8 0%, #45A8E6 100%);
+      --font-display: 'Syne', sans-serif;
+      --font-card: 'Space Grotesk', sans-serif;
+      --font-body: 'DM Sans', sans-serif;
+      --nav-h: 72px;
+      --t-fast: 0.2s ease;
+      --t-med: 0.35s ease;
+    }
+
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      background: var(--void-black);
+      color: var(--platinum-silver);
+      font-family: var(--font-body);
+      font-weight: 300;
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+    img { max-width: 100%; display: block; }
+    a { text-decoration: none; color: inherit; }
+    ul { list-style: none; }
+    button { cursor: pointer; border: none; background: none; font-family: inherit; }
+
+    body::after {
+      content: '';
+      position: fixed; inset: 0;
+      pointer-events: none; z-index: 9999; opacity: 0.35;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)' opacity='0.08'/%3E%3C/svg%3E");
+    }
+
+    .container { max-width: 1180px; margin: 0 auto; padding: 0 24px; }
+
+    .gradient-text {
+      background: var(--brand-gradient);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+    }
+
+    /* NAVBAR */
+    #nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 800;
+      height: var(--nav-h);
+      background: rgba(10,10,10,0.78);
+      backdrop-filter: blur(18px); -webkit-backdrop-filter: blur(18px);
+      border-bottom: 1px solid rgba(255,255,255,0.04);
+      transition: height var(--t-fast), background var(--t-fast);
+    }
+    #nav.compact { height: 58px; background: rgba(10,10,10,0.92); }
+
+    .nav-inner {
+      height: 100%; display: flex; align-items: center; justify-content: space-between;
+      max-width: 1180px; margin: 0 auto; padding: 0 24px;
+    }
+    .nav-logo img { height: 85px; width: auto; }
+    .nav-links { display: flex; align-items: center; gap: 32px; }
+    .nav-links a {
+      font-size: 0.88rem; font-weight: 400; color: var(--platinum-silver);
+      position: relative; transition: color var(--t-fast);
+    }
+    .nav-links a::after {
+      content: ''; position: absolute; bottom: -4px; left: 0;
+      width: 0; height: 1px; background: var(--signal-teal); transition: width var(--t-fast);
+    }
+    .nav-links a:hover { color: #fff; }
+    .nav-links a:hover::after, .nav-links a.active::after { width: 100%; }
+    .nav-cta {
+      display: inline-flex; align-items: center; padding: 9px 20px;
+      background: var(--brand-gradient); border-radius: 7px;
+      font-family: var(--font-card); font-size: 0.78rem; font-weight: 700;
+      text-transform: uppercase; letter-spacing: 0.08em; color: #0A0A0A;
+      transition: transform var(--t-fast), box-shadow var(--t-fast);
+    }
+    .nav-cta:hover { transform: scale(1.03); box-shadow: 0 4px 20px rgba(61,219,184,0.3); }
+
+    .hamburger { display: none; flex-direction: column; gap: 5px; cursor: pointer; padding: 4px; }
+    .hamburger span { display: block; width: 22px; height: 2px; background: var(--platinum-silver); border-radius: 2px; transition: transform var(--t-fast), opacity var(--t-fast); transform-origin: center; }
+    .hamburger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+    .hamburger.open span:nth-child(2) { opacity: 0; transform: scaleX(0); }
+    .hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+    .mob-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.55); z-index: 790; opacity: 0; pointer-events: none; transition: opacity var(--t-med); }
+    .mob-overlay.open { opacity: 1; pointer-events: all; }
+    .mob-menu { position: fixed; top: 0; right: -100%; width: min(340px,100vw); height: 100vh; background: var(--dark-surface); z-index: 795; padding: 90px 36px 40px; display: flex; flex-direction: column; gap: 28px; border-left: 1px solid rgba(255,255,255,0.05); transition: right 0.38s cubic-bezier(0.4,0,0.2,1); }
+    .mob-menu.open { right: 0; }
+    .mob-menu a { font-family: var(--font-card); font-size: 1.4rem; font-weight: 700; color: var(--platinum-silver); transition: color var(--t-fast); }
+    .mob-menu a:hover { color: #fff; }
+    .mob-menu .nav-cta { font-size: 0.9rem; padding: 14px; justify-content: center; margin-top: auto; }
+
+    /* HERO */
+    .about-hero {
+      padding: calc(var(--nav-h) + 80px) 0 80px;
+      position: relative; overflow: hidden;
+    }
+    .orb { position: absolute; border-radius: 50%; filter: blur(90px); pointer-events: none; }
+    .orb-teal { width: 500px; height: 500px; background: radial-gradient(circle, rgba(61,219,184,0.08) 0%, transparent 70%); top: -120px; left: -120px; }
+    .orb-blue { width: 400px; height: 400px; background: radial-gradient(circle, rgba(69,168,230,0.06) 0%, transparent 70%); bottom: -80px; right: -80px; }
+
+    .about-hero-inner { position: relative; z-index: 10; max-width: 760px; text-align: center; margin: 0 auto; }
+    .about-hero-label {
+      font-family: var(--font-display); font-size: 0.68rem; font-weight: 700;
+      text-transform: uppercase; letter-spacing: 0.22em; color: var(--signal-teal); margin-bottom: 20px;
+      opacity: 0; animation: fadeUp 0.55s ease forwards 0.1s;
+    }
+    .about-hero-title {
+      font-family: var(--font-display); font-size: clamp(2.8rem, 5vw, 4.4rem);
+      font-weight: 800; line-height: 1.0; color: #fff; margin-bottom: 24px;
+      opacity: 0; animation: fadeUp 0.55s ease forwards 0.25s;
+    }
+    .about-hero-sub {
+      font-size: 1.05rem; font-weight: 300; color: var(--platinum-silver);
+      line-height: 1.78; max-width: 560px; margin: 0 auto;
+      opacity: 0; animation: fadeUp 0.55s ease forwards 0.4s;
+    }
+
+    @keyframes fadeUp { from { opacity: 0; transform: translateY(22px); } to { opacity: 1; transform: none; } }
+
+    /* STORY */
+    .about-story {
+      padding: calc(var(--nav-h) + 60px) 0 80px;
+    }
+    .story-head { margin-bottom: 44px; }
+    .story-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 72px; align-items: start; }
+    .story-text { font-size: 0.97rem; font-weight: 300; color: var(--platinum-silver); line-height: 1.85; margin-bottom: 22px; }
+    .story-text strong { color: #fff; font-weight: 500; }
+    .story-sig {
+      font-family: var(--font-display); font-size: 1.05rem; font-weight: 800;
+      background: var(--brand-gradient); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+      margin-top: 28px; display: block;
+    }
+
+    /* HOW WE DO IT */
+    .about-how {
+      padding: 80px 0;
+      border-top: 1px solid rgba(255,255,255,0.05);
+    }
+    .how-grid { display: grid; grid-template-columns: 1fr 1.1fr; gap: 72px; align-items: center; }
+    .how-label { font-family: var(--font-display); font-size: 0.68rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.22em; color: var(--signal-teal); margin-bottom: 16px; display: block; }
+    .how-title { font-family: var(--font-display); font-size: clamp(1.9rem, 3.5vw, 2.7rem); font-weight: 800; color: #fff; line-height: 1.08; margin-bottom: 20px; }
+    .how-desc { font-size: 0.97rem; font-weight: 300; color: var(--platinum-silver); line-height: 1.85; margin-bottom: 20px; }
+    .how-steps { display: flex; flex-direction: column; gap: 14px; margin-top: 28px; }
+    .how-step { display: flex; gap: 14px; align-items: flex-start; }
+    .how-step-num {
+      flex-shrink: 0; width: 28px; height: 28px; border-radius: 50%;
+      background: rgba(61,219,184,0.1); border: 1px solid rgba(61,219,184,0.35);
+      display: flex; align-items: center; justify-content: center;
+      font-family: var(--font-display); font-size: 0.65rem; font-weight: 700;
+      color: var(--signal-teal); margin-top: 1px;
+    }
+    .how-step-text { font-size: 0.9rem; font-weight: 300; color: var(--platinum-silver); line-height: 1.65; }
+    .how-step-text strong { color: #fff; font-weight: 500; }
+
+    /* VIDEO */
+    .how-video-wrap {
+      position: relative;
+      border-radius: 18px;
+      overflow: hidden;
+      border: 1px solid rgba(61,219,184,0.12);
+      box-shadow: 0 32px 72px rgba(0,0,0,0.5), 0 0 0 1px rgba(255,255,255,0.04);
+      background: var(--dark-surface);
+    }
+    .how-video-wrap::before {
+      content: '';
+      position: absolute; inset: 0; z-index: 1;
+      background: linear-gradient(to bottom, transparent 70%, rgba(10,10,10,0.5) 100%);
+      pointer-events: none;
+    }
+    .how-video-wrap video {
+      width: 100%; display: block;
+      border-radius: 18px;
+    }
+    .how-video-badge {
+      position: absolute; bottom: 18px; left: 18px; z-index: 2;
+      display: flex; align-items: center; gap: 8px;
+      background: rgba(10,10,10,0.75);
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(61,219,184,0.18);
+      border-radius: 8px; padding: 8px 14px;
+    }
+    .how-video-badge-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--signal-teal); animation: pulse-dot 2s ease-in-out infinite; }
+    .how-video-badge-text { font-size: 0.75rem; font-weight: 400; color: #fff; }
+    @keyframes pulse-dot { 0%,100% { opacity: 1; } 50% { opacity: 0.35; } }
+
+    /* FOUNDERS */
+    .founders-col { display: grid; gap: 24px; }
+    .founder-card {
+      background: var(--dark-surface);
+      border-radius: 16px; padding: 28px;
+      border: 1px solid rgba(255,255,255,0.06);
+      display: flex; gap: 20px; align-items: flex-start;
+      transition: transform var(--t-med), border-color var(--t-med), box-shadow var(--t-med);
+    }
+    .founder-card:hover { transform: translateY(-3px); border-color: rgba(61,219,184,0.2); box-shadow: 0 16px 48px rgba(0,0,0,0.28); }
+    .founder-photo-ring { flex-shrink: 0; width: 76px; height: 76px; border-radius: 50%; padding: 2px; background: var(--brand-gradient); }
+    .founder-photo-inner { width: 100%; height: 100%; border-radius: 50%; overflow: hidden; background: var(--dark-surface); }
+    .founder-photo-inner img { width: 100%; height: 100%; object-fit: cover; object-position: center top; }
+    .founder-name { font-family: var(--font-card); font-size: 1.05rem; font-weight: 700; color: #fff; margin-bottom: 3px; }
+    .founder-title { font-size: 0.8rem; font-weight: 400; color: var(--signal-teal); margin-bottom: 10px; }
+    .founder-bio { font-size: 0.88rem; font-weight: 300; color: var(--platinum-silver); line-height: 1.68; }
+
+    /* VALUES */
+    .about-values { padding: 80px 0; border-top: 1px solid rgba(255,255,255,0.05); }
+    .values-head { margin-bottom: 48px; }
+    .section-label { font-family: var(--font-display); font-size: 0.68rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.2em; color: var(--signal-teal); margin-bottom: 14px; display: block; }
+    .section-headline { font-family: var(--font-display); font-size: clamp(1.8rem, 3.5vw, 2.6rem); font-weight: 800; color: #fff; line-height: 1.1; margin-bottom: 14px; }
+    .values-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; }
+    .value-card {
+      background: var(--dark-surface); border-radius: 14px; padding: 28px;
+      border: 1px solid rgba(255,255,255,0.06);
+      transition: transform var(--t-med), border-color var(--t-med);
+    }
+    .value-card:hover { transform: translateY(-3px); border-color: rgba(61,219,184,0.18); }
+    .value-num {
+      font-family: var(--font-card); font-size: 2rem; font-weight: 800;
+      background: var(--brand-gradient); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+      margin-bottom: 10px; display: block;
+    }
+    .value-title { font-family: var(--font-card); font-size: 0.95rem; font-weight: 700; color: #fff; margin-bottom: 8px; }
+    .value-desc { font-size: 0.86rem; font-weight: 300; color: var(--platinum-silver); line-height: 1.7; }
+
+    /* CTA */
+    .about-cta {
+      padding: 80px 0;
+      text-align: center;
+      border-top: 1px solid rgba(255,255,255,0.05);
+    }
+    .about-cta-label { font-family: var(--font-display); font-size: 0.68rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.2em; color: var(--signal-teal); margin-bottom: 16px; }
+    .about-cta-title { font-family: var(--font-display); font-size: clamp(1.8rem, 3.5vw, 2.6rem); font-weight: 800; color: #fff; margin-bottom: 16px; }
+    .about-cta-sub { font-size: 0.97rem; font-weight: 300; color: var(--platinum-silver); line-height: 1.7; margin-bottom: 32px; max-width: 520px; margin-left: auto; margin-right: auto; }
+    .btn-primary {
+      display: inline-flex; align-items: center; gap: 8px; padding: 13px 26px;
+      background: var(--brand-gradient); border-radius: 8px;
+      font-family: var(--font-card); font-size: 0.8rem; font-weight: 700;
+      text-transform: uppercase; letter-spacing: 0.09em; color: #0A0A0A;
+      transition: transform var(--t-fast), box-shadow var(--t-fast);
+    }
+    .btn-primary:hover { transform: scale(1.03); box-shadow: 0 6px 28px rgba(61,219,184,0.35); }
+
+    /* BOOKING MODAL */
+    .booking-modal-overlay {
+      position: fixed; inset: 0; z-index: 300;
+      background: rgba(0,0,0,0.78);
+      backdrop-filter: blur(8px);
+      display: flex; align-items: center; justify-content: center;
+      padding: 20px;
+      opacity: 0; pointer-events: none;
+      transition: opacity 0.3s ease;
+    }
+    .booking-modal-overlay.open { opacity: 1; pointer-events: all; }
+    .booking-modal {
+      background: #111213;
+      border-radius: 20px;
+      border: 1px solid rgba(255,255,255,0.08);
+      width: 100%; max-width: 560px;
+      max-height: 90vh;
+      overflow-y: auto;
+      position: relative;
+      transform: translateY(18px) scale(0.97);
+      opacity: 0;
+      transition: transform 0.32s cubic-bezier(0.34,1.56,0.64,1), opacity 0.25s ease;
+    }
+    .booking-modal-overlay.open .booking-modal { transform: none; opacity: 1; }
+    .booking-modal-header {
+      padding: 20px 24px 16px;
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    .booking-modal-title {
+      font-family: var(--font-card); font-size: 0.97rem; font-weight: 700; color: #fff;
+    }
+    .booking-modal-sub {
+      font-size: 0.78rem; font-weight: 300; color: var(--platinum-silver); opacity: 0.6; margin-top: 2px;
+    }
+    .booking-modal-close {
+      width: 32px; height: 32px;
+      border-radius: 8px;
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,255,255,0.08);
+      color: var(--platinum-silver);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1rem; cursor: pointer; flex-shrink: 0;
+      transition: background var(--t-fast), color var(--t-fast), border-color var(--t-fast);
+    }
+    .booking-modal-close:hover { background: rgba(255,80,80,0.1); color: #ff6060; border-color: rgba(255,80,80,0.25); }
+    @media (min-width: 768px) {
+      .booking-modal { max-height: calc(100vh - 40px); }
+      .calendly-inline-widget { height: calc(100vh - 160px) !important; min-height: 480px; max-height: 620px; }
+    }
+
+    /* Calendar */
+    .cal-wrap { background: var(--dark-surface); border-radius: 18px; border: 1px solid rgba(255,255,255,0.06); overflow: hidden; opacity: 0; transition: opacity 0.4s ease; }
+    .cal-wrap.visible { opacity: 1; }
+    .cal-head { padding: 22px 26px 18px; border-bottom: 1px solid rgba(255,255,255,0.05); display: flex; align-items: center; justify-content: space-between; }
+    .cal-month { font-family: var(--font-card); font-size: 0.97rem; font-weight: 700; color: #fff; }
+    .cal-nav { display: flex; gap: 7px; }
+    .cal-btn { width: 30px; height: 30px; border-radius: 7px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.08); color: var(--platinum-silver); display: flex; align-items: center; justify-content: center; font-size: 0.88rem; cursor: pointer; transition: background var(--t-fast), border-color var(--t-fast), color var(--t-fast); }
+    .cal-btn:hover { background: rgba(61,219,184,0.1); border-color: var(--signal-teal); color: var(--signal-teal); }
+    .cal-body { padding: 18px 24px; }
+    .cal-weekdays { display: grid; grid-template-columns: repeat(7, 1fr); text-align: center; margin-bottom: 10px; }
+    .cal-wd { font-family: var(--font-display); font-size: 0.62rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.07em; color: var(--platinum-silver); opacity: 0.45; padding: 5px 0; }
+    .cal-cells { display: grid; grid-template-columns: repeat(7, 1fr); gap: 3px; }
+    .cal-cell { aspect-ratio: 1; display: flex; align-items: center; justify-content: center; border-radius: 7px; font-size: 0.86rem; font-weight: 400; color: var(--platinum-silver); border: 1px solid transparent; transition: background var(--t-fast), border-color var(--t-fast), color var(--t-fast); }
+    .cal-cell.empty, .cal-cell.disabled, .cal-cell.weekend, .cal-cell.past { opacity: 0.2; pointer-events: none; }
+    .cal-cell.avail { cursor: pointer; color: #fff; }
+    .cal-cell.avail:hover { background: rgba(61,219,184,0.1); border-color: rgba(61,219,184,0.3); color: var(--signal-teal); }
+    .cal-cell.today { border-color: rgba(61,219,184,0.35); }
+    .cal-cell.sel { background: var(--brand-gradient) !important; color: #0A0A0A !important; font-weight: 700; border-color: transparent !important; box-shadow: 0 0 18px rgba(61,219,184,0.28); }
+    .time-panel { padding: 0 24px; max-height: 0; overflow: hidden; opacity: 0; transition: max-height 0.42s cubic-bezier(0.4,0,0.2,1), opacity 0.28s ease, padding 0.3s ease; }
+    .time-panel.show { max-height: 200px; opacity: 1; padding: 0 24px 20px; }
+    .time-panel-label { font-family: var(--font-display); font-size: 0.7rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.12em; color: var(--platinum-silver); opacity: 0.55; margin-bottom: 12px; padding-top: 4px; }
+    .time-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 7px; }
+    .time-slot { padding: 10px 6px; text-align: center; border-radius: 7px; border: 1px solid rgba(255,255,255,0.08); font-size: 0.82rem; font-weight: 400; color: var(--platinum-silver); cursor: pointer; transition: border-color var(--t-fast), color var(--t-fast), background var(--t-fast); }
+    .time-slot:hover { border-color: var(--signal-teal); color: var(--signal-teal); background: rgba(61,219,184,0.06); }
+    .time-slot.sel { background: var(--brand-gradient); color: #0A0A0A; border-color: transparent; font-weight: 600; }
+    .booking-form { border-top: 1px solid rgba(255,255,255,0.05); padding: 0 24px; max-height: 0; overflow: hidden; opacity: 0; transition: max-height 0.5s cubic-bezier(0.4,0,0.2,1), opacity 0.3s ease, padding 0.3s ease; }
+    .booking-form.show { max-height: 600px; opacity: 1; padding: 22px 24px 24px; }
+    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 12px; }
+    .form-field { display: flex; flex-direction: column; gap: 5px; }
+    .form-field.span2 { grid-column: span 2; }
+    .form-label { font-size: 0.72rem; font-weight: 500; color: var(--platinum-silver); opacity: 0.65; text-transform: uppercase; letter-spacing: 0.07em; }
+    .form-input, .form-select { background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.1); border-radius: 8px; padding: 11px 13px; color: #fff; font-size: 0.88rem; font-weight: 300; outline: none; width: 100%; transition: border-color var(--t-fast), background var(--t-fast); }
+    .form-input:focus, .form-select:focus { border-color: var(--signal-teal); background: rgba(61,219,184,0.04); }
+    .form-input::placeholder { color: rgba(200,208,216,0.35); }
+    .form-select { appearance: none; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%23C8D0D8' stroke-opacity='0.5' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 13px center; padding-right: 32px; }
+    .form-select option { background: var(--dark-surface); }
+    .form-submit { width: 100%; margin-top: 14px; padding: 14px; background: var(--brand-gradient); border-radius: 8px; font-family: var(--font-card); font-size: 0.82rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; color: #0A0A0A; transition: transform var(--t-fast), box-shadow var(--t-fast); }
+    .form-submit:hover { transform: scale(1.02); box-shadow: 0 6px 24px rgba(61,219,184,0.35); }
+    .success-state { padding: 48px 24px; text-align: center; display: none; }
+    .success-state.show { display: block; }
+    .success-ring { width: 62px; height: 62px; border-radius: 50%; background: rgba(61,219,184,0.08); border: 2px solid var(--signal-teal); display: flex; align-items: center; justify-content: center; margin: 0 auto 22px; font-size: 1.4rem; animation: pop 0.4s cubic-bezier(0.34,1.56,0.64,1); }
+    @keyframes pop { from { transform: scale(0); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+    .success-title { font-family: var(--font-card); font-size: 1.35rem; font-weight: 800; color: #fff; margin-bottom: 10px; }
+    .success-msg { font-size: 0.9rem; font-weight: 300; color: var(--platinum-silver); line-height: 1.7; }
+
+    /* FOOTER */
+    footer { background: var(--void-black); padding: 60px 0 30px; position: relative; }
+    footer::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 1px; background: var(--brand-gradient); opacity: 0.45; }
+    .footer-grid { display: grid; grid-template-columns: 1.6fr 1fr 1fr; gap: 48px; margin-bottom: 44px; }
+    .footer-logo img { height: 60px; margin-bottom: 12px; }
+    .footer-tagline { font-size: 0.84rem; font-weight: 300; color: var(--platinum-silver); opacity: 0.55; line-height: 1.65; }
+    .footer-col-head { font-family: var(--font-display); font-size: 0.67rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.16em; color: var(--platinum-silver); opacity: 0.45; margin-bottom: 16px; }
+    .footer-links { display: flex; flex-direction: column; gap: 10px; }
+    .footer-links a { font-size: 0.86rem; font-weight: 300; color: var(--platinum-silver); opacity: 0.65; transition: opacity var(--t-fast), color var(--t-fast); }
+    .footer-links a:hover { opacity: 1; color: var(--signal-teal); }
+    .footer-bottom { padding-top: 26px; border-top: 1px solid rgba(255,255,255,0.05); display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px; }
+    .footer-copy { font-size: 0.76rem; font-weight: 300; color: var(--platinum-silver); opacity: 0.35; }
+
+    /* Reveal */
+    .reveal { opacity: 0; transform: translateY(36px); transition: opacity 0.75s ease, transform 0.75s ease; }
+    .reveal.in { opacity: 1; transform: none; }
+    .reveal.d2 { transition-delay: 0.2s; }
+
+    /* RESPONSIVE */
+    @media (max-width: 768px) {
+      .nav-links { display: none; }
+      .hamburger { display: flex; }
+      .story-grid { grid-template-columns: 1fr; gap: 44px; }
+      .how-grid { grid-template-columns: 1fr; gap: 44px; }
+      .values-grid { grid-template-columns: 1fr; }
+      .footer-grid { grid-template-columns: 1fr; gap: 28px; }
+      .footer-bottom { flex-direction: column; text-align: center; }
+    }
+  </style>
+</head>
+<body>
+
+  <nav id="nav">
+    <div class="nav-inner">
+      <a href="index.html" class="nav-logo" aria-label="Nexos Digital Solutions">
+        <img src="Brand Identity (Nexos)/Logo_transparent_background.png" alt="Nexos Digital Solutions">
+      </a>
+      <div class="nav-links">
+        <a href="index.html#solutions">Solutions</a>
+        <a href="index.html#why-us">Why Us</a>
+        <a href="about.html" class="active">About</a>
+        <a href="#" class="nav-cta" id="navBookBtn">Book a Call</a>
+      </div>
+      <button class="hamburger" id="hamburger" aria-label="Open menu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </nav>
+
+  <div class="mob-overlay" id="mobOverlay"></div>
+  <div class="mob-menu" id="mobMenu">
+    <a href="index.html#solutions" class="mob-link">Solutions</a>
+    <a href="index.html#why-us" class="mob-link">Why Us</a>
+    <a href="about.html" class="mob-link">About</a>
+    <a href="#" class="nav-cta mob-link" id="mobBookBtn">Book a Strategy Call →</a>
+  </div>
+
+  <!-- STORY + FOUNDERS -->
+  <section class="about-story">
+    <div class="container">
+      <div class="story-grid">
+        <div class="reveal">
+          <span class="section-label">Our Story</span>
+          <h2 class="section-headline" style="margin-bottom: 28px;">Partners First.<br>Everything Else <span class="gradient-text">Second</span>.</h2>
+          <p class="story-text">
+            Nexos Digital Solutions was founded by <strong>Andres Silva</strong> and <strong>Dylan Whitehead</strong> — two former college tennis teammates who turned a shared frustration into a mission.
+          </p>
+          <p class="story-text">
+            Local businesses kept getting sold tools they didn't need by agencies that never took the time to understand their problems. <strong>We built Nexos to change that</strong> — to make powerful automation, AI, and outreach tools accessible to the businesses that need them most.
+          </p>
+          <span class="story-sig">We're hungry. And we deliver.</span>
+        </div>
+
+        <div class="founders-col reveal d2">
+          <div class="founder-card">
+            <div class="founder-photo-ring">
+              <div class="founder-photo-inner">
+                <img src="Brand Identity (Nexos)/dylan headshot.jpg" alt="Dylan Whitehead">
+              </div>
+            </div>
+            <div>
+              <p class="founder-name">Dylan Whitehead</p>
+              <p class="founder-title">Co-Founder · Partnerships &amp; Business Development</p>
+              <p class="founder-bio">I work closely with business owners to help them modernize their operations and build systems that support long-term growth. As a business owner myself, I understand the real challenges local companies face every day.</p>
+            </div>
+          </div>
+
+          <div class="founder-card">
+            <div class="founder-photo-ring">
+              <div class="founder-photo-inner">
+                <img src="Brand Identity (Nexos)/Andres_Headshot.jfif" alt="Andres Silva">
+              </div>
+            </div>
+            <div>
+              <p class="founder-name">Andres Silva</p>
+              <p class="founder-title">Co-Founder · Product &amp; AI Systems Development</p>
+              <p class="founder-bio">I help businesses integrate AI and automation into their operations so they can capture more opportunities and run more efficiently. My background in product development allows Nexos to design solutions that truly streamline how businesses operate.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- VALUES -->
+  <section class="about-values">
+    <div class="container">
+      <div class="values-head reveal">
+        <span class="section-label">What We Stand For</span>
+        <h2 class="section-headline">Our Core Beliefs</h2>
+      </div>
+      <div class="values-grid">
+        <div class="value-card reveal">
+          <span class="value-num">01</span>
+          <h3 class="value-title">Listen Before You Build</h3>
+          <p class="value-desc">We never pitch a solution before we understand the problem. Every engagement starts with a real conversation about what's actually holding your business back.</p>
+        </div>
+        <div class="value-card reveal">
+          <span class="value-num">02</span>
+          <h3 class="value-title">Partnership Over Transactions</h3>
+          <p class="value-desc">We're not here to close a deal and move on. We're invested in your success for the long term. When you grow, we grow.</p>
+        </div>
+        <div class="value-card reveal">
+          <span class="value-num">03</span>
+          <h3 class="value-title">Results Over Retainers</h3>
+          <p class="value-desc">We don't believe in locking people into contracts for services that don't deliver. We measure success by what changes in your business.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="about-cta">
+    <div class="container">
+      <p class="about-cta-label">Let's Talk</p>
+      <h2 class="about-cta-title">Ready to Work Together?</h2>
+      <p class="about-cta-sub">Book a free 30-minute strategy call. We'll dig into your business, find the bottleneck, and show you what we'd build to fix it.</p>
+      <a href="#" class="btn-primary" id="ctaBookBtn">Book a Free Strategy Call →</a>
+    </div>
+  </section>
+
+  <!-- BOOKING MODAL -->
+  <div class="booking-modal-overlay" id="bookingModalOverlay" role="dialog" aria-modal="true" aria-label="Book a Strategy Call">
+    <div class="booking-modal" id="bookingModal">
+      <div class="booking-modal-header">
+        <div>
+          <p class="booking-modal-title">Book Your Free Strategy Call</p>
+          <p class="booking-modal-sub">30 min · Free · No pressure</p>
+        </div>
+        <button class="booking-modal-close" id="bookingModalClose" aria-label="Close">✕</button>
+      </div>
+      <div class="calendly-inline-widget" data-url="https://calendly.com/nexosds-info/30min?hide_gdpr_banner=1&background_color=111213&text_color=C8D0D8&primary_color=3DDBB8" style="min-width:320px;height:660px;"></div>
+    </div>
+  </div>
+
+  <footer>
+    <div class="container">
+      <div class="footer-grid">
+        <div>
+          <div class="footer-logo">
+            <img src="Brand Identity (Nexos)/Logo_transparent_background.png" alt="Nexos Digital Solutions">
+          </div>
+          <p class="footer-tagline">Built on Partnership.<br>Driven by Solutions.</p>
+        </div>
+        <div>
+          <p class="footer-col-head">Navigation</p>
+          <div class="footer-links">
+            <a href="index.html">Home</a>
+            <a href="index.html#solutions">Solutions</a>
+            <a href="index.html#why-us">Why Nexos</a>
+            <a href="about.html">About Us</a>
+            <a href="#" class="footer-book-btn">Book a Call</a>
+          </div>
+        </div>
+        <div>
+          <p class="footer-col-head">Contact</p>
+          <div class="footer-links">
+            <a href="#">nexosds.com</a>
+            <a href="mailto:info@nexosds.com">info@nexosds.com</a>
+            <a href="https://www.instagram.com/nexosds/" target="_blank" rel="noopener">Instagram ↗</a>
+          </div>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p class="footer-copy">© 2026 Nexos Digital Solutions. All rights reserved.</p>
+        <p class="footer-copy">nexosds.com</p>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    const nav = document.getElementById('nav');
+    window.addEventListener('scroll', () => nav.classList.toggle('compact', scrollY > 60), { passive: true });
+
+    const ham = document.getElementById('hamburger');
+    const mobOverlay = document.getElementById('mobOverlay');
+    const mobMenu = document.getElementById('mobMenu');
+    function setMenu(open) {
+      ham.classList.toggle('open', open);
+      mobOverlay.classList.toggle('open', open);
+      mobMenu.classList.toggle('open', open);
+      document.body.style.overflow = open ? 'hidden' : '';
+    }
+    ham.addEventListener('click', () => setMenu(!mobMenu.classList.contains('open')));
+    mobOverlay.addEventListener('click', () => setMenu(false));
+    document.querySelectorAll('.mob-link').forEach(l => l.addEventListener('click', () => setMenu(false)));
+
+    const ro = new IntersectionObserver(entries => {
+      entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('in'); });
+    }, { threshold: 0.1, rootMargin: '0px 0px -36px 0px' });
+    document.querySelectorAll('.reveal').forEach(el => ro.observe(el));
+
+    /* --- BOOKING MODAL --- */
+    const bookingOverlay = document.getElementById('bookingModalOverlay');
+    function openBookingModal() {
+      bookingOverlay.classList.add('open');
+      document.body.style.overflow = 'hidden';
+    }
+    function closeBookingModal() {
+      bookingOverlay.classList.remove('open');
+      document.body.style.overflow = '';
+    }
+    document.getElementById('bookingModalClose').addEventListener('click', closeBookingModal);
+    bookingOverlay.addEventListener('click', e => { if (e.target === bookingOverlay) closeBookingModal(); });
+    document.addEventListener('keydown', e => { if (e.key === 'Escape') closeBookingModal(); });
+
+    ['navBookBtn','mobBookBtn','ctaBookBtn'].forEach(id => {
+      const el = document.getElementById(id);
+      if (el) el.addEventListener('click', e => { e.preventDefault(); openBookingModal(); });
+    });
+    document.querySelectorAll('.footer-book-btn').forEach(el => {
+      el.addEventListener('click', e => { e.preventDefault(); openBookingModal(); });
+    });
+
+  </script>
+  <script src="https://assets.calendly.com/assets/external/widget.js" async></script>
+</body>
+</html>
