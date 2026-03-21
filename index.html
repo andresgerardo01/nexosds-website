@@ -1335,6 +1335,18 @@
       .orb { animation: none !important; }
       body { touch-action: pan-y; }
 
+      /* Bucket cards — always show content on mobile, no hover interference */
+      .bucket-card { cursor: default; transform: none !important; }
+      .bucket-card:hover, .bucket-card:active { transform: none !important; box-shadow: none !important; }
+      .bucket-card:hover::before { opacity: 0 !important; }
+      .bc-products { max-height: none !important; opacity: 1 !important; overflow: visible !important; }
+      .bc-hint { display: none !important; }
+
+      /* Features — always expanded on mobile, remove accordion tap interference */
+      .feat-acc-body { max-height: none !important; overflow: visible !important; padding: 0 20px 18px !important; }
+      .feat-acc-chevron { display: none !important; }
+      .feat-card { transform: none !important; }
+
       /* Hero — allow full carousel visibility on mobile */
       #home { height: auto; min-height: 100svh; }
       .hero-illus-inner { padding-top: 52px; }
@@ -1817,8 +1829,8 @@
     mobOverlay.addEventListener('click', () => setMenu(false));
     document.querySelectorAll('.mob-link').forEach(l => l.addEventListener('click', () => setMenu(false)));
 
-    /* --- FEATURES ACCORDION (mobile only) --- */
-    if (window.innerWidth <= 768) {
+    /* --- FEATURES ACCORDION (mobile only — disabled, always open via CSS) --- */
+    if (false && window.innerWidth <= 768) {
       const featCards = document.querySelectorAll('.feat-card');
 
       function openCard(card) {
