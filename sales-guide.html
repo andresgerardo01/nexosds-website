@@ -1,0 +1,1447 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Nexos — Sales Call Guide</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #08090A;
+      --surface: #111418;
+      --surface-2: #191E24;
+      --border: rgba(255,255,255,0.07);
+      --border-bright: rgba(255,255,255,0.13);
+      --teal: #3DDBB8;
+      --blue: #45A8E6;
+      --teal-dim: rgba(61,219,184,0.12);
+      --teal-glow: rgba(61,219,184,0.25);
+      --blue-dim: rgba(69,168,230,0.12);
+      --text: #C8D0D8;
+      --text-muted: #5C6470;
+      --text-bright: #FFFFFF;
+      --grad: linear-gradient(135deg, #3DDBB8, #45A8E6);
+      --font-head: 'Syne', sans-serif;
+      --font-body: 'DM Sans', sans-serif;
+      --font-mono: 'JetBrains Mono', monospace;
+    }
+
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+    html { font-size: 16px; }
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--font-body);
+      font-weight: 300;
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    /* Subtle grain */
+    body::before {
+      content: '';
+      position: fixed; inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)' opacity='0.06'/%3E%3C/svg%3E");
+      pointer-events: none; z-index: 9999; opacity: 0.4;
+    }
+
+    /* ── Layout ── */
+    .app { max-width: 720px; margin: 0 auto; padding: 0 20px 80px; }
+
+    /* ── Header ── */
+    .header {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 20px 0 0;
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 18px;
+      margin-bottom: 28px;
+    }
+    .logo-area { display: flex; align-items: center; gap: 12px; }
+    .logo-mark {
+      width: 32px; height: 32px; border-radius: 8px;
+      background: var(--grad);
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
+    }
+    .logo-mark svg { width: 17px; height: 17px; }
+    .logo-text { font-family: var(--font-head); font-size: 0.78rem; font-weight: 700; letter-spacing: 0.05em; color: #fff; }
+    .logo-sub { font-size: 0.7rem; color: var(--text-muted); margin-top: 1px; }
+    .reset-btn {
+      font-family: var(--font-mono); font-size: 0.68rem; color: var(--text-muted);
+      border: 1px solid var(--border); border-radius: 6px;
+      padding: 6px 12px; cursor: pointer; background: none;
+      transition: color 0.2s, border-color 0.2s;
+      letter-spacing: 0.03em;
+    }
+    .reset-btn:hover { color: var(--teal); border-color: var(--teal); }
+
+    /* ── Breadcrumb trail ── */
+    .trail {
+      display: flex; align-items: center; flex-wrap: wrap;
+      gap: 4px; margin-bottom: 24px; min-height: 22px;
+    }
+    .trail-item {
+      font-family: var(--font-mono); font-size: 0.62rem; color: var(--text-muted);
+      letter-spacing: 0.04em; text-transform: uppercase;
+      padding: 3px 8px; border-radius: 4px; background: var(--surface);
+      border: 1px solid var(--border);
+      cursor: pointer; transition: color 0.15s, border-color 0.15s;
+    }
+    .trail-item:hover { color: var(--text); border-color: var(--border-bright); }
+    .trail-item.active { color: var(--teal); border-color: rgba(61,219,184,0.3); background: var(--teal-dim); }
+    .trail-sep { color: var(--text-muted); font-size: 0.6rem; opacity: 0.5; }
+
+    /* ── Phase badge ── */
+    .phase-badge {
+      display: inline-flex; align-items: center; gap: 7px;
+      font-family: var(--font-mono); font-size: 0.65rem; font-weight: 500;
+      text-transform: uppercase; letter-spacing: 0.1em;
+      padding: 5px 11px; border-radius: 20px;
+      margin-bottom: 16px;
+    }
+    .phase-badge .dot { width: 6px; height: 6px; border-radius: 50%; animation: pulse 2s infinite; }
+    @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.4; } }
+
+    .phase-open    { background: rgba(61,219,184,0.1); color: var(--teal); border: 1px solid rgba(61,219,184,0.25); }
+    .phase-open .dot { background: var(--teal); }
+    .phase-disco   { background: rgba(255,193,7,0.1); color: #FFC107; border: 1px solid rgba(255,193,7,0.25); }
+    .phase-disco .dot { background: #FFC107; animation: none; }
+    .phase-lead    { background: rgba(61,219,184,0.1); color: var(--teal); border: 1px solid rgba(61,219,184,0.25); }
+    .phase-lead .dot { background: var(--teal); }
+    .phase-retain  { background: rgba(69,168,230,0.12); color: var(--blue); border: 1px solid rgba(69,168,230,0.3); }
+    .phase-retain .dot { background: var(--blue); }
+    .phase-auto    { background: rgba(180,100,255,0.1); color: #C084FC; border: 1px solid rgba(192,132,252,0.3); }
+    .phase-auto .dot { background: #C084FC; }
+    .phase-close   { background: rgba(34,197,94,0.1); color: #4ADE80; border: 1px solid rgba(74,222,128,0.3); }
+    .phase-close .dot { background: #4ADE80; }
+    .phase-obj     { background: rgba(251,146,60,0.1); color: #FB923C; border: 1px solid rgba(251,146,60,0.3); }
+    .phase-obj .dot { background: #FB923C; animation: none; }
+    .phase-done    { background: rgba(34,197,94,0.15); color: #4ADE80; border: 1px solid rgba(74,222,128,0.4); }
+    .phase-done .dot { background: #4ADE80; animation: none; }
+
+    /* ── Main card ── */
+    .node-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 28px 28px 24px;
+      margin-bottom: 16px;
+      position: relative;
+      animation: cardIn 0.28s cubic-bezier(0.34,1.56,0.64,1) both;
+    }
+    @keyframes cardIn {
+      from { opacity: 0; transform: translateY(12px) scale(0.98); }
+      to   { opacity: 1; transform: none; }
+    }
+
+    .say-label {
+      font-family: var(--font-mono); font-size: 0.6rem; font-weight: 500;
+      text-transform: uppercase; letter-spacing: 0.15em;
+      color: var(--text-muted); margin-bottom: 12px;
+      display: flex; align-items: center; gap: 8px;
+    }
+    .say-label::after {
+      content: ''; flex: 1; height: 1px; background: var(--border);
+    }
+
+    .script-text {
+      font-family: var(--font-body); font-size: 1.18rem; font-weight: 400;
+      color: var(--text-bright); line-height: 1.65;
+      margin-bottom: 0;
+    }
+    .script-text em {
+      color: var(--teal); font-style: normal; font-weight: 500;
+    }
+    .script-text .placeholder {
+      color: var(--teal); font-style: italic; opacity: 0.85;
+    }
+
+    /* ── Tip panel ── */
+    .tip-panel {
+      margin-top: 20px; padding: 14px 16px;
+      background: var(--surface-2);
+      border: 1px solid var(--border);
+      border-left: 3px solid rgba(255,193,7,0.5);
+      border-radius: 0 8px 8px 0;
+    }
+    .tip-label {
+      font-family: var(--font-mono); font-size: 0.58rem; font-weight: 500;
+      text-transform: uppercase; letter-spacing: 0.12em;
+      color: #FFC107; margin-bottom: 6px;
+    }
+    .tip-text { font-size: 0.82rem; color: var(--text-muted); line-height: 1.6; font-style: italic; }
+
+    /* ── Choices ── */
+    .choices-label {
+      font-family: var(--font-mono); font-size: 0.6rem; font-weight: 500;
+      text-transform: uppercase; letter-spacing: 0.15em;
+      color: var(--text-muted); margin-bottom: 10px;
+      display: flex; align-items: center; gap: 8px;
+    }
+    .choices-label::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+
+    .choices { display: flex; flex-direction: column; gap: 8px; margin-bottom: 16px; }
+
+    .choice-btn {
+      width: 100%; text-align: left;
+      padding: 14px 18px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      cursor: pointer;
+      font-family: var(--font-body); font-size: 0.88rem; font-weight: 400;
+      color: var(--text);
+      line-height: 1.45;
+      transition: background 0.18s, border-color 0.18s, color 0.18s, transform 0.15s;
+      display: flex; align-items: flex-start; gap: 12px;
+    }
+    .choice-btn:hover {
+      background: var(--surface-2);
+      border-color: var(--border-bright);
+      color: var(--text-bright);
+      transform: translateX(3px);
+    }
+    .choice-btn:active { transform: translateX(2px) scale(0.99); }
+
+    .choice-icon {
+      flex-shrink: 0; margin-top: 1px;
+      width: 22px; height: 22px; border-radius: 6px;
+      background: var(--surface-2); border: 1px solid var(--border);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 0.7rem; color: var(--text-muted);
+      transition: background 0.18s, border-color 0.18s, color 0.18s;
+    }
+    .choice-btn:hover .choice-icon {
+      background: var(--teal-dim);
+      border-color: rgba(61,219,184,0.35);
+      color: var(--teal);
+    }
+    .choice-tag {
+      flex-shrink: 0; align-self: center;
+      font-family: var(--font-mono); font-size: 0.58rem;
+      padding: 2px 7px; border-radius: 4px; margin-left: auto;
+    }
+    .tag-lead   { background: rgba(61,219,184,0.1); color: var(--teal); }
+    .tag-retain { background: rgba(69,168,230,0.1); color: var(--blue); }
+    .tag-auto   { background: rgba(192,132,252,0.1); color: #C084FC; }
+
+    .choice-content { flex: 1; }
+    .choice-headline { font-weight: 500; color: var(--text-bright); margin-bottom: 2px; }
+    .choice-sub { font-size: 0.78rem; color: var(--text-muted); }
+
+    /* ── Back button ── */
+    .nav-row { display: flex; gap: 8px; }
+    .back-btn {
+      display: flex; align-items: center; gap: 7px;
+      font-family: var(--font-mono); font-size: 0.68rem;
+      color: var(--text-muted); background: none;
+      border: 1px solid var(--border); border-radius: 7px;
+      padding: 8px 14px; cursor: pointer;
+      transition: color 0.2s, border-color 0.2s;
+      letter-spacing: 0.03em;
+    }
+    .back-btn:hover { color: var(--text); border-color: var(--border-bright); }
+    .back-btn svg { width: 12px; height: 12px; }
+
+    /* ── Done state ── */
+    .done-card {
+      text-align: center; padding: 48px 28px;
+      background: var(--surface);
+      border: 1px solid rgba(74,222,128,0.2);
+      border-radius: 16px;
+      animation: cardIn 0.3s ease both;
+    }
+    .done-icon {
+      width: 56px; height: 56px; border-radius: 50%;
+      background: rgba(74,222,128,0.12);
+      border: 1px solid rgba(74,222,128,0.3);
+      display: flex; align-items: center; justify-content: center;
+      margin: 0 auto 20px; font-size: 1.4rem;
+    }
+    .done-title { font-family: var(--font-head); font-size: 1.4rem; font-weight: 700; color: #fff; margin-bottom: 8px; }
+    .done-sub { font-size: 0.88rem; color: var(--text-muted); line-height: 1.6; max-width: 400px; margin: 0 auto 28px; }
+
+    /* ── Bucket indicator (sidebar-style, shows in tree root) ── */
+    .bucket-bar {
+      display: flex; gap: 8px; margin-bottom: 24px; flex-wrap: wrap;
+    }
+    .bucket-pill {
+      font-family: var(--font-mono); font-size: 0.62rem; letter-spacing: 0.08em;
+      text-transform: uppercase; padding: 5px 12px; border-radius: 20px;
+      border: 1px solid var(--border); color: var(--text-muted);
+      display: flex; align-items: center; gap: 6px;
+    }
+    .bucket-pill.active-lead   { background: var(--teal-dim); border-color: rgba(61,219,184,0.35); color: var(--teal); }
+    .bucket-pill.active-retain { background: var(--blue-dim); border-color: rgba(69,168,230,0.35); color: var(--blue); }
+    .bucket-pill.active-auto   { background: rgba(192,132,252,0.1); border-color: rgba(192,132,252,0.35); color: #C084FC; }
+
+    /* ── Floating objection button ── */
+    .obj-fab {
+      position: fixed; bottom: 24px; right: 20px;
+      background: var(--surface-2);
+      border: 1px solid rgba(251,146,60,0.35);
+      border-radius: 10px;
+      padding: 10px 16px;
+      cursor: pointer;
+      font-family: var(--font-mono); font-size: 0.65rem;
+      color: #FB923C; letter-spacing: 0.06em; text-transform: uppercase;
+      display: flex; align-items: center; gap: 7px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.4);
+      transition: background 0.2s, border-color 0.2s, transform 0.15s;
+      z-index: 100;
+    }
+    .obj-fab:hover { background: rgba(251,146,60,0.12); border-color: rgba(251,146,60,0.6); transform: translateY(-2px); }
+    .obj-fab .fab-dot { width: 7px; height: 7px; border-radius: 50%; background: #FB923C; }
+
+    /* ── Objection drawer ── */
+    .obj-drawer {
+      position: fixed; bottom: 72px; right: 20px;
+      width: 300px; max-height: 70vh; overflow-y: auto;
+      background: var(--surface); border: 1px solid rgba(251,146,60,0.3);
+      border-radius: 12px; padding: 16px;
+      box-shadow: 0 8px 40px rgba(0,0,0,0.5);
+      z-index: 100;
+      display: none;
+    }
+    .obj-drawer.open { display: block; animation: cardIn 0.2s ease both; }
+    .obj-drawer-title {
+      font-family: var(--font-mono); font-size: 0.6rem; text-transform: uppercase;
+      letter-spacing: 0.12em; color: #FB923C; margin-bottom: 12px;
+    }
+    .obj-item {
+      padding: 9px 12px; border-radius: 7px;
+      border: 1px solid var(--border); background: var(--surface-2);
+      margin-bottom: 6px; cursor: pointer;
+      font-size: 0.8rem; color: var(--text);
+      transition: color 0.15s, border-color 0.15s;
+    }
+    .obj-item:hover { color: #FB923C; border-color: rgba(251,146,60,0.4); }
+    .obj-item-label { font-weight: 500; color: var(--text-bright); font-size: 0.75rem; margin-bottom: 2px; }
+    .obj-item-sub { font-size: 0.7rem; color: var(--text-muted); }
+
+    /* ── Tab navigation ── */
+    .tab-bar {
+      display: flex; gap: 4px;
+      border-bottom: 1px solid var(--border);
+      margin-bottom: 28px;
+      padding-bottom: 0;
+    }
+    .tab-btn {
+      font-family: var(--font-mono); font-size: 0.68rem; font-weight: 500;
+      text-transform: uppercase; letter-spacing: 0.1em;
+      padding: 10px 18px;
+      border: none; background: none; cursor: pointer;
+      color: var(--text-muted);
+      border-bottom: 2px solid transparent;
+      margin-bottom: -1px;
+      transition: color 0.18s, border-color 0.18s;
+    }
+    .tab-btn:hover { color: var(--text); }
+    .tab-btn.active { color: var(--teal); border-bottom-color: var(--teal); }
+
+    /* ── Products tab ── */
+    .products-panel { display: none; }
+    .products-panel.active { display: block; }
+    .guide-panel { display: block; }
+    .guide-panel.hidden { display: none; }
+
+    .products-intro {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 22px 24px;
+      margin-bottom: 28px;
+    }
+    .products-intro-label {
+      font-family: var(--font-mono); font-size: 0.6rem; font-weight: 500;
+      text-transform: uppercase; letter-spacing: 0.15em;
+      color: var(--teal); margin-bottom: 8px;
+    }
+    .products-intro-title {
+      font-family: var(--font-head); font-size: 1.1rem; font-weight: 700;
+      color: #fff; margin-bottom: 8px; line-height: 1.3;
+    }
+    .products-intro-sub {
+      font-size: 0.85rem; color: var(--text-muted); line-height: 1.65;
+    }
+
+    .bucket-section { margin-bottom: 28px; }
+    .bucket-section-head {
+      display: flex; align-items: center; gap: 12px;
+      margin-bottom: 12px;
+    }
+    .bucket-section-icon {
+      width: 36px; height: 36px; border-radius: 9px; flex-shrink: 0;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .bucket-section-icon svg { width: 17px; height: 17px; }
+    .icon-lead   { background: rgba(61,219,184,0.12); color: var(--teal); }
+    .icon-retain { background: rgba(69,168,230,0.12); color: var(--blue); }
+    .icon-auto   { background: rgba(192,132,252,0.12); color: #C084FC; }
+
+    .bucket-section-info {}
+    .bucket-section-label {
+      font-family: var(--font-mono); font-size: 0.58rem; font-weight: 500;
+      text-transform: uppercase; letter-spacing: 0.12em;
+      margin-bottom: 2px;
+    }
+    .label-lead   { color: var(--teal); }
+    .label-retain { color: var(--blue); }
+    .label-auto   { color: #C084FC; }
+
+    .bucket-section-title {
+      font-family: var(--font-head); font-size: 0.95rem; font-weight: 700;
+      color: #fff;
+    }
+    .bucket-section-signal {
+      font-size: 0.78rem; color: var(--text-muted); font-style: italic;
+    }
+
+    .products-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+    }
+    .product-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 14px 15px;
+      transition: border-color 0.18s, background 0.18s;
+    }
+    .product-card:hover {
+      background: var(--surface-2);
+      border-color: var(--border-bright);
+    }
+    .product-name {
+      font-family: var(--font-head); font-size: 0.82rem; font-weight: 700;
+      color: #fff; margin-bottom: 5px; line-height: 1.3;
+    }
+    .product-desc {
+      font-size: 0.75rem; color: var(--text-muted); line-height: 1.55;
+    }
+    .product-tag {
+      display: inline-block; margin-top: 8px;
+      font-family: var(--font-mono); font-size: 0.55rem; font-weight: 500;
+      text-transform: uppercase; letter-spacing: 0.08em;
+      padding: 2px 7px; border-radius: 4px;
+    }
+    .ptag-lead   { background: rgba(61,219,184,0.1);  color: var(--teal); }
+    .ptag-retain { background: rgba(69,168,230,0.1);  color: var(--blue); }
+    .ptag-auto   { background: rgba(192,132,252,0.1); color: #C084FC; }
+
+    /* ── Responsive ── */
+    @media (max-width: 540px) {
+      .products-grid { grid-template-columns: 1fr; }
+    }
+    @media (max-width: 480px) {
+      .script-text { font-size: 1rem; }
+      .node-card { padding: 20px 18px; }
+      .header { flex-wrap: wrap; gap: 10px; }
+      .obj-drawer { width: calc(100vw - 40px); right: 20px; }
+    }
+  </style>
+</head>
+<body>
+<div class="app">
+
+  <!-- Header -->
+  <div class="header">
+    <div class="logo-area">
+      <div class="logo-mark">
+        <svg viewBox="0 0 24 24" fill="none" stroke="#0A0A0A" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/>
+        </svg>
+      </div>
+      <div>
+        <div class="logo-text">NEXOS DIGITAL</div>
+        <div class="logo-sub">Sales Call Guide</div>
+      </div>
+    </div>
+    <div style="display:flex;gap:8px;align-items:center;">
+      <button class="reset-btn" onclick="goTo('start', true)" title="Warm opener: How've you been?">↺ Warm Open</button>
+      <button class="reset-btn" onclick="goTo('start_alt', true)" style="color:var(--teal);border-color:rgba(61,219,184,0.3);" title="Direct opener: This is a cold call">⚡ Direct Open</button>
+    </div>
+  </div>
+
+  <!-- Tab navigation -->
+  <div class="tab-bar">
+    <button class="tab-btn active" id="tab-guide" onclick="switchTab('guide')">Call Guide</button>
+    <button class="tab-btn" id="tab-products" onclick="switchTab('products')">Products</button>
+  </div>
+
+  <!-- Call Guide panel -->
+  <div class="guide-panel" id="panel-guide">
+    <div id="app-root"></div>
+  </div>
+
+  <!-- Products cheat sheet panel -->
+  <div class="products-panel" id="panel-products">
+
+    <!-- What is Nexos -->
+    <div class="products-intro">
+      <div class="products-intro-label">About Nexos Digital</div>
+      <div class="products-intro-title">We build automated growth systems for small and mid-size businesses.</div>
+      <div class="products-intro-sub">We don't sell software — we sell outcomes. Every client gets a custom-built system that solves their specific bottleneck: not enough clients, clients not coming back, or too much manual work eating up the team's time. One agency. Three core solutions.</div>
+    </div>
+
+    <!-- Bucket 1: Lead Generation -->
+    <div class="bucket-section">
+      <div class="bucket-section-head">
+        <div class="bucket-section-icon icon-lead">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+        </div>
+        <div class="bucket-section-info">
+          <div class="bucket-section-label label-lead">Problem 01 — Lead Generation</div>
+          <div class="bucket-section-title">Not Enough New Clients</div>
+          <div class="bucket-section-signal">"We're great at what we do — people just can't find us."</div>
+        </div>
+      </div>
+      <div class="products-grid">
+        <div class="product-card">
+          <div class="product-name">Meta Ads</div>
+          <div class="product-desc">Paid campaigns on Facebook and Instagram targeting the exact type of client they want. We handle creative, audience targeting, and ongoing optimization.</div>
+          <span class="product-tag ptag-lead">Paid Social</span>
+        </div>
+        <div class="product-card">
+          <div class="product-name">Lead Capture Surveys</div>
+          <div class="product-desc">Social media surveys that collect contact info and qualify leads before they reach the client's inbox. Turns passive followers into real prospects.</div>
+          <span class="product-tag ptag-lead">Social</span>
+        </div>
+        <div class="product-card">
+          <div class="product-name">Website AI Chatbot</div>
+          <div class="product-desc">A 24/7 conversational bot on their website that qualifies visitors, answers common questions, and books appointments automatically — even at 2am.</div>
+          <span class="product-tag ptag-lead">AI / Web</span>
+        </div>
+        <div class="product-card">
+          <div class="product-name">Local SEO & Landing Pages</div>
+          <div class="product-desc">Optimized web pages that rank locally on Google and convert visitors into booked leads. Built around the keywords their ideal clients are actually searching.</div>
+          <span class="product-tag ptag-lead">SEO / Web</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Bucket 2: Client Retention -->
+    <div class="bucket-section">
+      <div class="bucket-section-head">
+        <div class="bucket-section-icon icon-retain">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+        </div>
+        <div class="bucket-section-info">
+          <div class="bucket-section-label label-retain">Problem 02 — Client Retention</div>
+          <div class="bucket-section-title">Clients Aren't Coming Back</div>
+          <div class="bucket-section-signal">"We get clients — keeping them is a different story."</div>
+        </div>
+      </div>
+      <div class="products-grid">
+        <div class="product-card">
+          <div class="product-name">24/7 AI Phone Receptionist</div>
+          <div class="product-desc">An AI that answers calls, qualifies the caller, and routes or books them — around the clock. No missed calls, no voicemail limbo, no front desk needed.</div>
+          <span class="product-tag ptag-retain">AI / Phone</span>
+        </div>
+        <div class="product-card">
+          <div class="product-name">Reminder Sequences (SMS + Email)</div>
+          <div class="product-desc">Automated appointment reminders sent by text and email before every visit. Reduces no-shows significantly and keeps the business top-of-mind between visits.</div>
+          <span class="product-tag ptag-retain">Automation</span>
+        </div>
+        <div class="product-card">
+          <div class="product-name">Post-Appointment Surveys</div>
+          <div class="product-desc">Automated feedback requests sent after every appointment. Surfaces unhappy clients before they churn and flags happy ones for review requests.</div>
+          <span class="product-tag ptag-retain">Feedback</span>
+        </div>
+        <div class="product-card">
+          <div class="product-name">Client Value Scoring</div>
+          <div class="product-desc">A scoring model that ranks clients by visit frequency, spend, and engagement — so the team knows exactly who's at risk of going quiet and when to reach out.</div>
+          <span class="product-tag ptag-retain">CRM / AI</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Bucket 3: Automation -->
+    <div class="bucket-section">
+      <div class="bucket-section-head">
+        <div class="bucket-section-icon icon-auto">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+        </div>
+        <div class="bucket-section-info">
+          <div class="bucket-section-label label-auto">Problem 03 — Automation Systems</div>
+          <div class="bucket-section-title">Too Much Manual Work</div>
+          <div class="bucket-section-signal">"My team spends more time on admin than on actual work."</div>
+        </div>
+      </div>
+      <div class="products-grid">
+        <div class="product-card">
+          <div class="product-name">Smart Online Booking</div>
+          <div class="product-desc">A self-booking system clients can use 24/7 — no calls, no back-and-forth, no manual confirmation. Syncs with the team's calendar in real time.</div>
+          <span class="product-tag ptag-auto">Booking</span>
+        </div>
+        <div class="product-card">
+          <div class="product-name">CRM Pipeline Automation</div>
+          <div class="product-desc">Automatically tracks every lead and client through the sales pipeline. Flags who needs a follow-up and when — no spreadsheets, nothing falls through the cracks.</div>
+          <span class="product-tag ptag-auto">CRM</span>
+        </div>
+        <div class="product-card">
+          <div class="product-name">Triggered Email Sequences</div>
+          <div class="product-desc">Automated email flows that fire based on what a client or lead does — booked, no-showed, purchased, went quiet. The right message, at the right time, automatically.</div>
+          <span class="product-tag ptag-auto">Email</span>
+        </div>
+        <div class="product-card">
+          <div class="product-name">Analytics & Reporting Dashboard</div>
+          <div class="product-desc">A live dashboard showing the business's key numbers — revenue, bookings, lead flow, retention rate. No more chasing data or building reports manually.</div>
+          <span class="product-tag ptag-auto">Reporting</span>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /products-panel -->
+
+</div>
+
+<!-- Floating objection quick-access -->
+<div class="obj-drawer" id="objDrawer">
+  <div class="obj-drawer-title">⚡ Jump to Objection</div>
+  <div class="obj-item" onclick="jumpDrawer('obj_existing_agency')">
+    <div class="obj-item-label">"I already work with an agency"</div>
+    <div class="obj-item-sub">Rate-your-vendor 1–10 technique</div>
+  </div>
+  <div class="obj-item" onclick="jumpDrawer('obj_decision_maker')">
+    <div class="obj-item-label">"Need to talk to my partner/boss"</div>
+    <div class="obj-item-sub">Get both on the strategy call</div>
+  </div>
+  <div class="obj-item" onclick="jumpDrawer('obj_bad_timing')">
+    <div class="obj-item-label">"Now's not a great time"</div>
+    <div class="obj-item-sub">Voss diagnostic — real timing vs. soft no</div>
+  </div>
+  <div class="obj-item" onclick="jumpDrawer('obj_ads')">
+    <div class="obj-item-label">"We tried ads and it didn't work"</div>
+    <div class="obj-item-sub">Ads fail without the system — reframe</div>
+  </div>
+  <div class="obj-item" onclick="jumpDrawer('obj_cost_lead')">
+    <div class="obj-item-label">"What does this cost?" / "Too expensive"</div>
+    <div class="obj-item-sub">ROI frame — never quote on a cold call</div>
+  </div>
+  <div class="obj-item" onclick="jumpDrawer('obj_multi_overwhelm')">
+    <div class="obj-item-label">"Sounds like a lot to take on"</div>
+    <div class="obj-item-sub">Start with one, expand — two weeks to live</div>
+  </div>
+  <div class="obj-item" onclick="jumpDrawer('obj_ret_complex')">
+    <div class="obj-item-label">"Sounds complicated to manage"</div>
+    <div class="obj-item-sub">You don't touch it — we handle everything</div>
+  </div>
+  <div class="obj-item" onclick="jumpDrawer('obj_auto_setup')">
+    <div class="obj-item-label">"Sounds complex to set up"</div>
+    <div class="obj-item-sub">Full setup by Nexos — live in 2 weeks</div>
+  </div>
+  <div class="obj-item" onclick="jumpDrawer('soft_close')">
+    <div class="obj-item-label">"Let me think about it"</div>
+    <div class="obj-item-sub">Surface the real concern — Blount turnaround</div>
+  </div>
+  <div class="obj-item" onclick="jumpDrawer('obj_agency_satisfied')">
+    <div class="obj-item-label">"Our agency is doing great"</div>
+    <div class="obj-item-sub">Stay warm — get email for future</div>
+  </div>
+</div>
+
+<button class="obj-fab" id="objFab" onclick="toggleDrawer()">
+  <span class="fab-dot"></span> Objections
+</button>
+
+<script>
+/* ============================================================
+   TREE DATA
+   Each node: { id, phase, phaseClass, script, tip, choices, done }
+   choices: [{ label, sub?, tag?, next }]
+   done: true if terminal node
+============================================================ */
+const TREE = {
+
+  /* ── OPENER ─────────────────────────────── */
+  start: {
+    id: 'start',
+    phase: '● Live Call — Opener',
+    phaseClass: 'phase-open',
+    script: `"Hey <span class="placeholder">[Name]</span>, this is <span class="placeholder">[Your Name]</span> from Nexos Digital — how've you been? [pause] The reason I'm calling — I work with businesses on their growth systems, specifically around getting more clients, keeping them, and cutting the admin work that slows everything down. I had one quick question for you. Is now a bad time?"`,
+    tip: `"How've you been?" is a pattern interrupt — Gong data shows it converts 6.6x better than "Did I catch you at a bad time?" (which hands them an easy out). "Is now a bad time?" (Voss) triggers a "No" response which keeps them in. If they're rushed, don't fight it — go to reschedule and get a specific time.`,
+    choices: [
+      { label: '"No, go ahead" / They engage', next: 'discovery' },
+      { label: "Not a great time right now", next: 'reschedule' },
+    ]
+  },
+
+  start_alt: {
+    id: 'start_alt',
+    phase: '● Alt Opener — Direct',
+    phaseClass: 'phase-open',
+    script: `"<span class="placeholder">[Name]</span>, I'll be straight with you — this is a cold call. You can hang up now or give me 30 seconds to tell you why I reached out. What do you say?"`,
+    tip: `Permission-based opener. Converts at 11% vs. 1.5% baseline (Gong, 90k+ calls). The honesty is the hook. Most people's curiosity beats their instinct to hang up. Use this if the warm opener feels off for your style.`,
+    choices: [
+      { label: '"Go ahead, 30 seconds"', next: 'discovery' },
+      { label: "Not a great time right now", next: 'reschedule' },
+    ]
+  },
+
+  reschedule: {
+    id: 'reschedule',
+    phase: 'Reschedule',
+    phaseClass: 'phase-open',
+    script: `"Totally get it — when's a better time? I'll call back then, no pressure at all."`,
+    tip: `Get a specific day and time, not "call me later." Lock it in and send a calendar reminder to yourself right after. A confirmed callback is almost as good as the first call.`,
+    choices: [
+      { label: "They give a time — log it & end call", next: 'end_reschedule' },
+    ]
+  },
+
+  end_reschedule: {
+    id: 'end_reschedule',
+    phase: 'Call Logged',
+    phaseClass: 'phase-done',
+    script: `"Perfect — I'll call you <span class="placeholder">[day/time]</span>. Talk soon!"`,
+    tip: `Set your reminder NOW before you move on. Don't rely on memory.`,
+    done: true,
+    doneLabel: 'Callback Scheduled',
+    doneIcon: '📅',
+    doneSub: 'Log the time and set a reminder. This lead is warm — don\'t let it go cold.'
+  },
+
+  /* ── DISCOVERY ───────────────────────────── */
+  discovery: {
+    id: 'discovery',
+    phase: 'Discovery',
+    phaseClass: 'phase-disco',
+    script: `"Quick question — we work with businesses on three main things: getting more new clients, keeping the ones they have coming back, and cutting down the manual work that slows everything down. Which of those sounds most like what you're dealing with right now?"`,
+    tip: `SPIN Selling: this is a Situation question — short, specific, low-threat. Don't embellish. Let them pick. Their answer tells you everything. Don't suggest an answer even if they pause — silence is fine.`,
+    choices: [
+      {
+        label: 'Getting more new clients',
+        sub: '"We\'re great at what we do, people just can\'t find us."',
+        tag: 'tag-lead', tagText: 'Lead Gen',
+        next: 'lead_qualify'
+      },
+      {
+        label: 'Keeping clients coming back',
+        sub: '"We get clients, but keeping them is a different story."',
+        tag: 'tag-retain', tagText: 'Retention',
+        next: 'ret_qualify'
+      },
+      {
+        label: 'Too much manual admin work',
+        sub: '"My team spends more time on admin than on actual work."',
+        tag: 'tag-auto', tagText: 'Automation',
+        next: 'auto_qualify'
+      },
+      {
+        label: 'All of them / two of them',
+        sub: 'Multiple pain points — prospect feels all three',
+        next: 'multi_qualify'
+      },
+      {
+        label: "They're not sure / vague answer",
+        next: 'discovery_probe'
+      },
+    ]
+  },
+
+  discovery_probe: {
+    id: 'discovery_probe',
+    phase: 'Discovery — Digging Deeper',
+    phaseClass: 'phase-disco',
+    script: `"No worries. Let me try it this way — think about last month. Where did the most friction come from? Was it not having enough new clients coming in, existing clients drifting away, or just all the manual stuff eating up your team's time?"`,
+    tip: `If they still can't land on one: "Which of those is costing you the most money right now?" Financial framing cuts through vague answers fast.`,
+    choices: [
+      { label: 'Finding new clients', tag: 'tag-lead', tagText: 'Lead Gen', next: 'lead_qualify' },
+      { label: 'Getting clients to come back', tag: 'tag-retain', tagText: 'Retention', next: 'ret_qualify' },
+      { label: 'Day-to-day operations', tag: 'tag-auto', tagText: 'Automation', next: 'auto_qualify' },
+      { label: 'All of them / multiple pains', next: 'multi_qualify' },
+    ]
+  },
+
+  /* ══════════════════════════════════════════
+     MULTI-BUCKET — ALL OF THE ABOVE
+  ══════════════════════════════════════════ */
+
+  multi_qualify: {
+    id: 'multi_qualify',
+    phase: 'Multi-Problem — Qualify',
+    phaseClass: 'phase-disco',
+    script: `"Okay — so it sounds like [pain 1], [pain 2], and [pain 3] are all on your plate. That's actually more common than you'd think. Let me ask you this: if you could only fix one of those this quarter, which one would make the biggest difference?"`,
+    tip: `SPIN Selling + Challenger Sale combined: enumerate all their pains so they feel heard, then force-rank. The highest-ranked one is your anchor. But the multi-problem framing sets you up to position the full system as ONE solution, not three separate ones.`,
+    choices: [
+      { label: 'Lead gen is the #1 priority', next: 'multi_pain_lead' },
+      { label: 'Retention is the #1 priority', next: 'multi_pain_retain' },
+      { label: 'Automation is the #1 priority', next: 'multi_pain_auto' },
+    ]
+  },
+
+  multi_pain_lead: {
+    id: 'multi_pain_lead',
+    phase: 'Multi-Problem — Implication',
+    phaseClass: 'phase-disco',
+    script: `"Makes sense. So on the client acquisition side — when someone hears about you but doesn't reach out that day, what happens? Do you have a way to capture and follow up with them, or do those leads just disappear?"`,
+    tip: `SPIN Implication question: get them to feel the cost of the problem, not just name it. "What happens when that lead goes cold?" builds urgency without you having to manufacture it.`,
+    choices: [{ label: 'Leads are slipping — move to multi pitch', next: 'multi_pitch' }]
+  },
+
+  multi_pain_retain: {
+    id: 'multi_pain_retain',
+    phase: 'Multi-Problem — Implication',
+    phaseClass: 'phase-disco',
+    script: `"Got it. So if 20% of the clients who came in once actually came back — what does that number look like for your revenue?"`,
+    tip: `Let them do the math out loud. It's almost always a number that surprises them. That's the Need-Payoff moment from SPIN — they\'re selling themselves on the value before you pitch anything.`,
+    choices: [{ label: 'They feel the retention gap — move to multi pitch', next: 'multi_pitch' }]
+  },
+
+  multi_pain_auto: {
+    id: 'multi_pain_auto',
+    phase: 'Multi-Problem — Implication',
+    phaseClass: 'phase-disco',
+    script: `"Okay — how much time a week would you estimate your team is spending on scheduling, follow-ups, and data entry? Like actual hours, not just 'some time.'"`,
+    tip: `Forcing them to put a number on it (even an estimate) makes the cost real. "Some time" is abstract. "12 hours a week" is money. Once there's a number, there's a ROI conversation.`,
+    choices: [{ label: 'The hours add up — move to multi pitch', next: 'multi_pitch' }]
+  },
+
+  multi_pitch: {
+    id: 'multi_pitch',
+    phase: 'Multi-Problem — Full System Pitch',
+    phaseClass: 'phase-disco',
+    script: `"Here's what I want to share with you — and it's actually good news. Those three problems you mentioned? They usually come from the same root: no connected system behind the business. What we build is an integrated growth engine — brings in new clients automatically, keeps existing ones engaged without anyone on your team lifting a finger, and handles the backend so nothing falls through the cracks. <em>One system. All three problems.</em>"`,
+    tip: `Challenger Sale reframe: "those three problems come from the same root." This positions you as the expert who sees what they can't. Don't list features — connect the problems first, then reveal the solution. Pause after "One system. All three problems." and let it land.`,
+    choices: [
+      { label: 'That lands — move to close', next: 'multi_close' },
+      { label: '"Sounds like a lot to take on"', next: 'obj_multi_overwhelm' },
+      { label: '"What does something like this cost?"', next: 'obj_cost_lead' },
+    ]
+  },
+
+  obj_multi_overwhelm: {
+    id: 'obj_multi_overwhelm',
+    phase: 'Objection — Feels Like a Lot',
+    phaseClass: 'phase-obj',
+    script: `"Fair reaction — and here's the thing: you don't start all three at once. We diagnose which problem is bleeding the most, start there, and expand from there. Most of our clients are surprised by how fast the first piece is live. We're talking two weeks, not six months."`,
+    tip: `Chunk it down. "All three" feels overwhelming. "Start with your biggest problem, see results fast" feels manageable. You can always upsell once trust is built.`,
+    choices: [{ label: 'They feel better about it — move to close', next: 'multi_close' }]
+  },
+
+  multi_close: {
+    id: 'multi_close',
+    phase: 'Multi-Problem — Close',
+    phaseClass: 'phase-close',
+    script: `"Given everything you just described, would it make sense to get on a proper 20-minute call this week? I'd come in with a specific plan based on your situation — not a generic pitch. I could do <span class="placeholder">[Day A]</span> or <span class="placeholder">[Day B]</span> — which works better?"`,
+    tip: `"Would it make sense" is Gong's highest-converting close frame — it's not a yes/no trap, it's a logic check. Two specific time options reduce decision fatigue. Have your calendar open and send the invite WHILE they're on the line.`,
+    choices: [
+      { label: "Yes — book it", next: 'book_call' },
+      { label: '"Let me think about it"', next: 'soft_close' },
+      { label: '"I already work with an agency"', next: 'obj_existing_agency' },
+      { label: '"Need to talk to my partner/boss first"', next: 'obj_decision_maker' },
+      { label: '"Now\'s not a great time"', next: 'obj_bad_timing' },
+    ]
+  },
+
+  /* ══════════════════════════════════════════
+     BUCKET 1 — LEAD GENERATION
+  ══════════════════════════════════════════ */
+
+  lead_qualify: {
+    id: 'lead_qualify',
+    phase: 'Lead Generation — Qualify',
+    phaseClass: 'phase-lead',
+    script: `"Got it. So how are you getting most of your new clients right now — is it mostly word of mouth, you're running ads, social media, or something else?"`,
+    tip: `Listen for the gap. "Mostly referrals" = no system. "We run some ads" = room to optimize. Either way, you have an angle.`,
+    choices: [
+      { label: 'Word of mouth / referrals', next: 'lead_pain_wom' },
+      { label: 'Running paid ads already', next: 'lead_pain_ads' },
+      { label: 'Social media organic', next: 'lead_pain_social' },
+    ]
+  },
+
+  lead_pain_wom: {
+    id: 'lead_pain_wom',
+    phase: 'Lead Generation — Pain',
+    phaseClass: 'phase-lead',
+    script: `"Word of mouth is great — but it's unpredictable, right? You can't really control when the next one comes in. How does that affect your month-to-month?"`,
+    tip: `They'll usually say it's stressful or inconsistent — good months and bad months. That's your opening. The goal is to get them to feel the instability before you offer the solution.`,
+    choices: [{ label: 'They feel the pain — move to pitch', next: 'lead_pitch' }]
+  },
+
+  lead_pain_ads: {
+    id: 'lead_pain_ads',
+    phase: 'Lead Generation — Pain',
+    phaseClass: 'phase-lead',
+    script: `"Nice, so you're already running ads. How are those converting — are you getting actual booked clients from them, or more like clicks and not much else?"`,
+    tip: `Most will say conversions are low or inconsistent. That's your hook: ads alone don't work, the system around them does. We close the loop on every lead.`,
+    choices: [{ label: 'Conversions are weak — move to pitch', next: 'lead_pitch' }]
+  },
+
+  lead_pain_social: {
+    id: 'lead_pain_social',
+    phase: 'Lead Generation — Pain',
+    phaseClass: 'phase-lead',
+    script: `"Social is great for visibility — but here's a question: when someone sees your post and doesn't reach out right then, what happens? Do you capture that lead somewhere, or do they just disappear?"`,
+    tip: `The answer is almost always "they just disappear." That's your in. Attention without a capture system is wasted attention.`,
+    choices: [{ label: 'They realize leads are slipping — move to pitch', next: 'lead_pitch' }]
+  },
+
+  lead_pitch: {
+    id: 'lead_pitch',
+    phase: 'Lead Generation — Solution',
+    phaseClass: 'phase-lead',
+    script: `"So here's what we do. We build a system that puts you in front of people who are actively looking for what you offer — Meta ads on Facebook and Instagram, lead capture forms, an AI chatbot on your site that qualifies and responds 24/7 — all connected, so every lead gets followed up automatically. <em>No leads go cold.</em>"`,
+    tip: `Pause after this. Let it land. Don't rush into more detail — give them a beat to process. You want them to respond, not just receive.`,
+    choices: [
+      { label: 'Sounds interesting — move to close', next: 'lead_close' },
+      { label: '"We already tried ads and it didn\'t work"', next: 'obj_ads' },
+      { label: '"What does something like this cost?"', next: 'obj_cost_lead' },
+    ]
+  },
+
+  obj_ads: {
+    id: 'obj_ads',
+    phase: 'Objection — Tried Ads Before',
+    phaseClass: 'phase-obj',
+    script: `"I figured you might say that — and honestly, you're right to be skeptical. Most ad campaigns fail. The reason isn't the ads themselves, it's that there's no system behind them catching the leads that don't convert immediately. We close that loop. Every single lead that comes in gets followed up automatically — nothing falls through. That's the actual difference."`,
+    tip: `Blount's Ledge: "I figured you might say that" signals calm confidence — you're not rattled, you've heard this before. Then reframe: the failure was the missing infrastructure, not ads as a category. Don't defend ads — defend the system.`,
+    choices: [{ label: 'They get it — move to close', next: 'lead_close' }]
+  },
+
+  obj_cost_lead: {
+    id: 'obj_cost_lead',
+    phase: 'Objection — Cost',
+    phaseClass: 'phase-obj',
+    script: `"Makes sense — and I wouldn't expect you to make any financial decision without knowing what the return looks like. That's exactly what the strategy call is for. If the numbers don't work for your situation, I'll tell you straight. But if two or three new clients a month covers the cost — which is usually the case — then it pays for itself before the second month."`,
+    tip: `Never give a price on a cold call. Redirect to ROI: "two or three new clients covers it" is concrete without being a quote. Blount Ledge-Disrupt-Ask: acknowledge → ROI reframe → re-ask for the call.`,
+    choices: [{ label: 'ROI framing lands — move to close', next: 'lead_close' }]
+  },
+
+  lead_close: {
+    id: 'lead_close',
+    phase: 'Lead Generation — Close',
+    phaseClass: 'phase-close',
+    script: `"Based on what you described, would it make sense to get on a 20-minute call this week where I actually <em>show you</em> what this looks like for a business like yours? I could do <span class="placeholder">[Day A]</span> or <span class="placeholder">[Day B]</span> — which works better?"`,
+    tip: `"Would it make sense" (Gong's top-converting close frame) beats "are you open to" — it's a logic check, not a pressure ask. Two specific options vs. open-ended. Send the invite while they're still on the line.`,
+    choices: [
+      { label: "Yes — let's book it", next: 'book_call' },
+      { label: '"Let me think about it" / Maybe', next: 'soft_close' },
+      { label: '"I already work with an agency"', next: 'obj_existing_agency' },
+      { label: '"Need to talk to my partner/boss first"', next: 'obj_decision_maker' },
+      { label: '"Now\'s not a great time"', next: 'obj_bad_timing' },
+    ]
+  },
+
+  /* ══════════════════════════════════════════
+     BUCKET 2 — CLIENT RETENTION
+  ══════════════════════════════════════════ */
+
+  ret_qualify: {
+    id: 'ret_qualify',
+    phase: 'Retention — Qualify',
+    phaseClass: 'phase-retain',
+    script: `"Yeah, that's actually really common. Let me ask — after a client works with you once, what does your follow-up look like? Do you have something that keeps them coming back, or is it more like... hoping they remember you?"`,
+    tip: `The word "hoping" usually gets a laugh of recognition. People know when they don't have a system — they just haven't named it.`,
+    choices: [
+      { label: 'No real follow-up system', next: 'ret_pain_none' },
+      { label: 'They send manual reminders', next: 'ret_pain_manual' },
+      { label: 'They already have something in place', next: 'ret_pain_existing' },
+    ]
+  },
+
+  ret_pain_none: {
+    id: 'ret_pain_none',
+    phase: 'Retention — Pain',
+    phaseClass: 'phase-retain',
+    script: `"Okay — so those clients who came in once and never came back. If even 20% of them came back just one more time, what does that look like for your revenue?"`,
+    tip: `Let them do the math out loud. The number is almost always bigger than they realize. That creates urgency you don't have to manufacture.`,
+    choices: [{ label: 'The number lands — move to pitch', next: 'ret_pitch' }]
+  },
+
+  ret_pain_manual: {
+    id: 'ret_pain_manual',
+    phase: 'Retention — Pain',
+    phaseClass: 'phase-retain',
+    script: `"So who's doing that — is someone on your team sending those manually? And if that person's out sick or just slammed, does that stuff still go out?"`,
+    tip: `The answer is almost always "not really" or "it depends." Manual = inconsistent. Inconsistent = lost revenue. That's the gap.`,
+    choices: [{ label: 'They see the inconsistency — move to pitch', next: 'ret_pitch' }]
+  },
+
+  ret_pain_existing: {
+    id: 'ret_pain_existing',
+    phase: 'Retention — Pain (Has Something)',
+    phaseClass: 'phase-retain',
+    script: `"Nice, good on you for having something in place. How's it actually working — are you seeing clients consistently come back, or does it still feel a bit hit-or-miss?"`,
+    tip: `Even if they have a system, there's usually a gap in how it's measured or optimized. Focus on the data side — do they actually know their retention rate?`,
+    choices: [
+      { label: 'Still feels hit-or-miss — move to pitch', next: 'ret_pitch' },
+      { label: '"It\'s working well" — probe further', next: 'ret_probe_existing' },
+    ]
+  },
+
+  ret_probe_existing: {
+    id: 'ret_probe_existing',
+    phase: 'Retention — Probing',
+    phaseClass: 'phase-retain',
+    script: `"That's great to hear. Do you know off the top of your head what your actual retention rate is — like what percentage of first-time clients come back within 90 days?"`,
+    tip: `Most people can't answer this. That inability IS the gap — they're flying blind. Move to pitch once they realize they don't have visibility into retention.`,
+    choices: [
+      { label: 'They don\'t know the number — move to pitch', next: 'ret_pitch' },
+      { label: 'They know the number but it\'s low — move to pitch', next: 'ret_pitch' },
+    ]
+  },
+
+  ret_pitch: {
+    id: 'ret_pitch',
+    phase: 'Retention — Solution',
+    phaseClass: 'phase-retain',
+    script: `"So what we build is basically a retention engine — automated reminders, follow-ups after every appointment, a quick survey so you know exactly who's happy and who's not, plus a scoring system that tells you which clients are most likely to go quiet. And <em>it all runs on its own</em>. Your team doesn't change a thing."`,
+    tip: `"Runs on its own" and "your team doesn't change a thing" are the two lines that land hardest. Let them sit for a beat.`,
+    choices: [
+      { label: 'That sounds exactly right — move to close', next: 'ret_close' },
+      { label: '"We already have something like that"', next: 'obj_ret_existing' },
+      { label: '"Sounds complicated to manage"', next: 'obj_ret_complex' },
+    ]
+  },
+
+  obj_ret_existing: {
+    id: 'obj_ret_existing',
+    phase: 'Objection — Already Have Something',
+    phaseClass: 'phase-obj',
+    script: `"That's great — honest question though: do you know how many clients came back specifically because of that system? Most of the time, when we look at the actual data, there's a real gap between what's going out and what's actually converting. Worth a 20-minute look to find out?"`,
+    tip: `This is non-threatening. You're not saying their system is bad — you're offering to measure it. Most people can't say no to data.`,
+    choices: [{ label: 'They\'re open to it — move to close', next: 'ret_close' }]
+  },
+
+  obj_ret_complex: {
+    id: 'obj_ret_complex',
+    phase: 'Objection — Sounds Complex',
+    phaseClass: 'phase-obj',
+    script: `"Actually it's the opposite — the whole point is that you don't touch it. We build it, we set it up, we run it. Your team's day-to-day doesn't change at all. You just start seeing clients come back more consistently."`,
+    tip: `Simplicity is the sell here. They're worried about adding more work. Reassure them this removes work, not adds it.`,
+    choices: [{ label: 'Reassured — move to close', next: 'ret_close' }]
+  },
+
+  ret_close: {
+    id: 'ret_close',
+    phase: 'Retention — Close',
+    phaseClass: 'phase-close',
+    script: `"Given what you just told me, would it make sense to get on a 20-minute call and actually look at this together? I'd show you the real system, not just talk about it. I could do <span class="placeholder">[Day A]</span> or <span class="placeholder">[Day B]</span> — which is better for you?"`,
+    tip: `"Would it make sense" is a logic check, not pressure. Two specific options reduce decision fatigue. Don't leave it open — "when works for you?" leads to "I'll get back to you."`,
+    choices: [
+      { label: "Let's do it — book the call", next: 'book_call' },
+      { label: '"Let me think about it"', next: 'soft_close' },
+      { label: '"I already work with an agency"', next: 'obj_existing_agency' },
+      { label: '"Need to talk to my partner/boss first"', next: 'obj_decision_maker' },
+      { label: '"Now\'s not a great time"', next: 'obj_bad_timing' },
+    ]
+  },
+
+  /* ══════════════════════════════════════════
+     BUCKET 3 — AUTOMATION SYSTEMS
+  ══════════════════════════════════════════ */
+
+  auto_qualify: {
+    id: 'auto_qualify',
+    phase: 'Automation — Qualify',
+    phaseClass: 'phase-auto',
+    script: `"I hear that a lot. Walk me through what a typical week looks like — where does most of your team's admin time actually go? Is it the scheduling, the follow-ups, data entry, something else?"`,
+    tip: `Listen carefully here. The specific pain — booking chaos, missed follow-ups, messy spreadsheets — tells you exactly which tools to highlight.`,
+    choices: [
+      { label: 'Scheduling / booking chaos', next: 'auto_pain_booking' },
+      { label: 'Missed or inconsistent follow-ups', next: 'auto_pain_followup' },
+      { label: 'Data entry / reporting takes forever', next: 'auto_pain_data' },
+    ]
+  },
+
+  auto_pain_booking: {
+    id: 'auto_pain_booking',
+    phase: 'Automation — Pain (Booking)',
+    phaseClass: 'phase-auto',
+    script: `"And right now, how does someone actually book with you — are they calling in, texting, DMing you? And is someone on your end manually confirming all of that back-and-forth?"`,
+    tip: `Booking chaos is an immediate ROI story. Every manual confirmation is time and money. They know this pain viscerally.`,
+    choices: [{ label: 'Yes, it\'s all manual — move to pitch', next: 'auto_pitch' }]
+  },
+
+  auto_pain_followup: {
+    id: 'auto_pain_followup',
+    phase: 'Automation — Pain (Follow-ups)',
+    phaseClass: 'phase-auto',
+    script: `"So when a lead or client needs a follow-up — who handles that, and how do they know who to follow up with and when? Is that tracked somewhere, or is it kind of in someone's head?"`,
+    tip: `"In someone's head" is the magic answer. It means nothing is systematized — and when that person is out, everything falls apart. Let them say it themselves.`,
+    choices: [{ label: '"Kind of in someone\'s head" — move to pitch', next: 'auto_pitch' }]
+  },
+
+  auto_pain_data: {
+    id: 'auto_pain_data',
+    phase: 'Automation — Pain (Reporting)',
+    phaseClass: 'phase-auto',
+    script: `"How long does it take your team to put together a weekly or monthly report? And when you're looking at that data, do you actually trust it — or does it always feel like you're chasing numbers that don't quite add up?"`,
+    tip: `Distrust in their own data is a strong signal. They're making decisions with bad information. That's a powerful problem to solve.`,
+    choices: [{ label: 'The data distrust resonates — move to pitch', next: 'auto_pitch' }]
+  },
+
+  auto_pitch: {
+    id: 'auto_pitch',
+    phase: 'Automation — Solution',
+    phaseClass: 'phase-auto',
+    script: `"So what we do is automate the whole backend — smart online booking that clients can use 24/7 themselves, a CRM that tracks every lead and follow-up automatically, email sequences that go out on their own, and a dashboard so you can see exactly how the business is performing without digging for data. <em>Your team stops doing admin and starts doing actual work.</em>"`,
+    tip: `"Your team stops doing admin and starts doing actual work" — that line hits hard. Pause after it.`,
+    choices: [
+      { label: '"That\'s exactly what we need" — move to close', next: 'auto_close' },
+      { label: '"Sounds complex to set up"', next: 'obj_auto_setup' },
+      { label: '"What does something like this cost?"', next: 'obj_cost_auto' },
+    ]
+  },
+
+  obj_auto_setup: {
+    id: 'obj_auto_setup',
+    phase: 'Objection — Setup Complexity',
+    phaseClass: 'phase-obj',
+    script: `"We handle the entire setup — you don't lift a finger. Most clients are up and running within two weeks, and we walk you through everything step by step. Once it's live, it just runs."`,
+    tip: `They're afraid of adding a project to their plate. Make it clear: this is our project, not theirs. They just show up to the kickoff call.`,
+    choices: [{ label: 'Reassured — move to close', next: 'auto_close' }]
+  },
+
+  obj_cost_auto: {
+    id: 'obj_cost_auto',
+    phase: 'Objection — Cost',
+    phaseClass: 'phase-obj',
+    script: `"Honestly, it depends on what we end up building. But here's how I'd frame it — if your team saves even 5 hours a week on admin work, what's that worth to you in real money? The strategy call is where we map out the actual ROI for your specific situation. No commitment."`,
+    tip: `Don't give a number yet. Frame cost as a ROI question — what does the problem currently cost them? That reframes the conversation entirely.`,
+    choices: [{ label: 'The framing lands — move to close', next: 'auto_close' }]
+  },
+
+  auto_close: {
+    id: 'auto_close',
+    phase: 'Automation — Close',
+    phaseClass: 'phase-close',
+    script: `"Would it be completely out of the question to put 20 minutes on the calendar this week? I'd show you the actual system and map out exactly what we'd automate for your situation specifically. I could do <span class="placeholder">[Day A]</span> or <span class="placeholder">[Day B]</span>."`,
+    tip: `"Would it be completely out of the question" (Voss No-Oriented Question) — people feel safer saying "No it wouldn't" than "Yes." That "No" is functionally a yes. Low-threat, high-conversion.`,
+    choices: [
+      { label: "Yes, let's set it up", next: 'book_call' },
+      { label: '"Let me think about it"', next: 'soft_close' },
+      { label: '"I already work with an agency"', next: 'obj_existing_agency' },
+      { label: '"Need to talk to my partner/boss first"', next: 'obj_decision_maker' },
+      { label: '"Now\'s not a great time"', next: 'obj_bad_timing' },
+    ]
+  },
+
+  /* ══════════════════════════════════════════
+     SHARED — UNIVERSAL OBJECTIONS
+  ══════════════════════════════════════════ */
+
+  obj_existing_agency: {
+    id: 'obj_existing_agency',
+    phase: 'Objection — Already With an Agency',
+    phaseClass: 'phase-obj',
+    script: `"Totally makes sense. Quick question — if you rated your current setup on a scale of 1 to 10, where would it honestly land?"`,
+    tip: `Cognism's "Rate your vendor" technique — they almost never say 10. Whatever number they give opens the gap. Then: "What would make it a 9 or 10?" and they describe your differentiation for you. Don't attack the agency — let them do it.`,
+    choices: [
+      { label: 'They rate it low (1–6) — dig deeper', next: 'obj_agency_low' },
+      { label: 'They rate it okay (7–8) — probe the gap', next: 'obj_agency_mid' },
+      { label: '"It\'s a 9 or 10 honestly"', next: 'obj_agency_satisfied' },
+    ]
+  },
+
+  obj_agency_low: {
+    id: 'obj_agency_low',
+    phase: 'Objection — Agency Underperforming',
+    phaseClass: 'phase-obj',
+    script: `"Okay — so what would make it a 9 or 10 for you? What's missing right now?"`,
+    tip: `Let them answer. They'll describe your solution without knowing it. When they finish, say: "That's exactly the gap we fill." Then move to close.`,
+    choices: [{ label: 'They describe the gap — move to close', next: 'lead_close' }]
+  },
+
+  obj_agency_mid: {
+    id: 'obj_agency_mid',
+    phase: 'Objection — Agency is "Fine"',
+    phaseClass: 'phase-obj',
+    script: `"That's fair. What's the one thing that would get it to a 9 or 10?"`,
+    tip: `Even a 7 has a gap. Get them to name it. Then connect that specific gap to what you do. If they can't name a gap, respect it — don't push, get the email and stay warm.`,
+    choices: [
+      { label: 'They name the gap — connect it to Nexos', next: 'lead_close' },
+      { label: 'No clear gap — stay warm', next: 'obj_agency_satisfied' },
+    ]
+  },
+
+  obj_agency_satisfied: {
+    id: 'obj_agency_satisfied',
+    phase: 'Objection — Agency is Doing Fine',
+    phaseClass: 'phase-obj',
+    script: `"That's great — seriously, I love hearing that. In that case, no pressure at all. What I'd ask is just one thing: keep us in mind for when their contract is up, or if the results start to slip. I'll send you a quick message so you have our info. What's the best email?"`,
+    tip: `Don't push further. Respect the relationship. Get the email, stay warm, and be patient. A lot of future clients start as "satisfied" leads who come back six months later.`,
+    choices: [
+      { label: 'Get email — soft close', next: 'soft_close' },
+    ]
+  },
+
+  obj_decision_maker: {
+    id: 'obj_decision_maker',
+    phase: 'Objection — Not the Decision Maker',
+    phaseClass: 'phase-obj',
+    script: `"Of course — that makes total sense. Can I ask: is it a decision that the two of you would make together, or is it more like they'd need to sign off after you've already decided? Either way, the strategy call is designed for exactly that — you both come on, see the system, and you can make the call together. Would that work?"`,
+    tip: `Try to get both decision makers on the strategy call. A decision maker who isn't on the call will always find a reason to say no. Better to include them early.`,
+    choices: [
+      { label: 'They can bring partner to call — move to close', next: 'book_call' },
+      { label: '"I\'d need to brief them first"', next: 'obj_dm_brief' },
+    ]
+  },
+
+  obj_dm_brief: {
+    id: 'obj_dm_brief',
+    phase: 'Objection — Needs to Brief Partner',
+    phaseClass: 'phase-obj',
+    script: `"Totally get it. Here's what I'll do — I'll send you a short, one-page summary of what we do and the three problems we solve. You can share it with them and if it resonates, we book a 20-minute call with both of you. Does that work?"`,
+    tip: `Send a clean, short PDF or even just a well-written email. Make it easy for them to advocate for you internally. Don't make them explain your pitch — give them the words.`,
+    choices: [
+      { label: 'Yes, send it over — get email', next: 'soft_close' },
+    ]
+  },
+
+  obj_bad_timing: {
+    id: 'obj_bad_timing',
+    phase: 'Objection — Bad Timing',
+    phaseClass: 'phase-obj',
+    script: `"Completely fair. Can I ask — is the timing off because you're genuinely slammed right now, or is it more that you're not sure this is even relevant to you yet?"`,
+    tip: `Voss diagnostic question — this separates real timing issues from polite dismissals. "Genuinely slammed" = set a specific future date and send a calendar hold. "Not sure it's relevant" = you haven't landed the value yet, back up and reframe.`,
+    choices: [
+      { label: 'Genuinely slammed — set a future date', next: 'obj_timing_future' },
+      { label: '"Not sure it\'s relevant" — reframe value', next: 'discovery' },
+      { label: 'Soft no — they\'re just not interested', next: 'soft_close' },
+    ]
+  },
+
+  obj_timing_future: {
+    id: 'obj_timing_future',
+    phase: 'Objection — Timing (Set Future Date)',
+    phaseClass: 'phase-obj',
+    script: `"I get it — let's do this. When does things calm down for you — are we talking a couple weeks, or more like next month? I'll reach back out then, and we can pick back up right where we left off. What's the best way to reach you?"`,
+    tip: `Get a specific date if you can. "I'll follow up in two weeks on the 15th — is that okay?" A confirmed follow-up date is worth ten times more than "I'll call sometime next month."`,
+    choices: [
+      { label: 'They give a date — schedule follow-up', next: 'end_reschedule' },
+      { label: 'Get email for async follow-up', next: 'soft_close' },
+    ]
+  },
+
+  /* ══════════════════════════════════════════
+     SHARED — CLOSING NODES
+  ══════════════════════════════════════════ */
+
+  book_call: {
+    id: 'book_call',
+    phase: 'Booking the Call ✓',
+    phaseClass: 'phase-close',
+    script: `"Perfect — what's the best email for the calendar invite? I'll send it right now while we're on the phone. <span class="placeholder">[Send invite]</span> Done — you should have it. It's 20 minutes, we'll be on video, and I'll put together a real look at what this would mean for your business specifically. Looking forward to it."`,
+    tip: `Send the invite WHILE they're still on the phone. Confirm they received it. An invite they see land in real time is far less likely to be cancelled than one they find later.`,
+    done: true,
+    doneLabel: 'Call Booked',
+    doneIcon: '✓',
+    doneSub: 'Log the client, note which bucket they\'re in, and prep a tailored walkthrough for the strategy call.'
+  },
+
+  soft_close: {
+    id: 'soft_close',
+    phase: 'Soft Close — Stay Warm',
+    phaseClass: 'phase-close',
+    script: `"Before I let you go — what specifically would you want to think through? [Listen.] Got it. So if we could address that in a 20-minute call — would that be worth your time? … No pressure either way. What's the best email so I can send something over?"`,
+    tip: `Blount's "Think About It" turnaround: name the specific concern before accepting the soft no. If they can articulate it, you can address it now. If they still want space, get the email. Follow up within 1 hour — "later today" beats "tomorrow" 3x for open rates.`,
+    done: true,
+    doneLabel: 'Warm Lead — Follow Up Within 1hr',
+    doneIcon: '→',
+    doneSub: 'Surface the real concern, address it if you can. If not — get the email and follow up within 1 hour with a booking link. Short, personal, no deck attached.'
+  },
+};
+
+/* ── State ── */
+let history = [];
+let currentId = 'start';
+
+/* ── Navigation ── */
+function goTo(id, reset) {
+  if (reset) { history = []; }
+  else if (currentId) { history.push(currentId); }
+  currentId = id;
+  render();
+}
+
+function goBack() {
+  if (!history.length) return;
+  currentId = history.pop();
+  render();
+}
+
+/* ── Phase label helpers ── */
+const BUCKET_LABELS = {
+  lead:   'Lead Generation',
+  retain: 'Client Retention',
+  auto:   'Automation Systems',
+};
+
+function detectBucket(id) {
+  if (!id) return null;
+  if (id.startsWith('lead') || id === 'obj_ads' || id === 'obj_cost_lead') return 'lead';
+  if (id.startsWith('ret')  || id === 'obj_ret_existing' || id === 'obj_ret_complex') return 'retain';
+  if (id.startsWith('auto') || id === 'obj_auto_setup' || id === 'obj_cost_auto') return 'auto';
+  return null;
+}
+
+function getActiveBucket() {
+  // Walk history + current to find bucket
+  const all = [...history, currentId];
+  for (let i = all.length - 1; i >= 0; i--) {
+    const b = detectBucket(all[i]);
+    if (b) return b;
+  }
+  return null;
+}
+
+/* ── Trail ── */
+function buildTrail() {
+  const ids = [...history, currentId];
+  const unique = ids.filter((v, i, a) => a.indexOf(v) === i);
+
+  const trailDiv = document.querySelector('.trail');
+  if (!trailDiv) return;
+
+  trailDiv.innerHTML = unique.map((id, i) => {
+    const node = TREE[id];
+    if (!node) return '';
+    const isActive = id === currentId;
+    const label = node.phase.replace(/^●\s*/, '').replace(/\s*—.*/, '').trim();
+    const cls = isActive ? 'trail-item active' : 'trail-item';
+    const sep = i < unique.length - 1 ? '<span class="trail-sep">›</span>' : '';
+    return `<span class="${cls}" onclick="jumpTo('${id}')">${label}</span>${sep}`;
+  }).join('');
+}
+
+function jumpTo(id) {
+  const idx = history.indexOf(id);
+  if (idx !== -1) {
+    history = history.slice(0, idx);
+    currentId = id;
+    render();
+  }
+}
+
+/* ── Render ── */
+function render() {
+  const root = document.getElementById('app-root');
+  const node = TREE[currentId];
+  if (!node) return;
+
+  const bucket = getActiveBucket();
+  const bucketBar = bucket ? `
+    <div class="bucket-bar">
+      <div class="bucket-pill ${bucket === 'lead'   ? 'active-lead'   : ''}">● Lead Generation</div>
+      <div class="bucket-pill ${bucket === 'retain' ? 'active-retain' : ''}">● Client Retention</div>
+      <div class="bucket-pill ${bucket === 'auto'   ? 'active-auto'   : ''}">● Automation Systems</div>
+    </div>
+  ` : '';
+
+  if (node.done) {
+    root.innerHTML = `
+      <div class="trail"></div>
+      ${bucketBar}
+      <div class="done-card">
+        <div class="done-icon">${node.doneIcon}</div>
+        <div class="done-title">${node.doneLabel}</div>
+        <p class="done-sub">${node.doneSub}</p>
+        <div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap;">
+          ${history.length ? `<button class="back-btn" onclick="goBack()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg> Back</button>` : ''}
+          <button class="reset-btn" onclick="goTo('start', true)">↺ New Call</button>
+        </div>
+      </div>
+      <div style="height:12px;display:block;margin-top:16px;"></div>
+      ${node.script ? `
+        <div class="node-card" style="margin-top:0;">
+          <div class="say-label">Final Script</div>
+          <div class="script-text">${node.script}</div>
+          ${node.tip ? `<div class="tip-panel"><div class="tip-label">⚡ Pro Tip</div><div class="tip-text">${node.tip}</div></div>` : ''}
+        </div>` : ''}
+    `;
+    buildTrail();
+    return;
+  }
+
+  const choicesHTML = node.choices.map((c, i) => {
+    const icon = i < 9 ? String.fromCharCode(49 + i) : '→';
+    const tagHTML = c.tag ? `<span class="choice-tag ${c.tag}">${c.tagText}</span>` : '';
+    const subHTML = c.sub ? `<div class="choice-sub">${c.sub}</div>` : '';
+    return `
+      <button class="choice-btn" onclick="goTo('${c.next}')">
+        <div class="choice-icon">${icon}</div>
+        <div class="choice-content">
+          <div class="choice-headline">${c.label}</div>
+          ${subHTML}
+        </div>
+        ${tagHTML}
+      </button>
+    `;
+  }).join('');
+
+  root.innerHTML = `
+    <div class="trail"></div>
+    ${bucketBar}
+    <div class="node-card">
+      <div class="phase-badge ${node.phaseClass}"><span class="dot"></span>${node.phase}</div>
+      <div class="say-label">Say This</div>
+      <div class="script-text">${node.script}</div>
+      ${node.tip ? `<div class="tip-panel"><div class="tip-label">⚡ Listen / Watch For</div><div class="tip-text">${node.tip}</div></div>` : ''}
+    </div>
+    <div class="choices-label">Their Response</div>
+    <div class="choices">${choicesHTML}</div>
+    <div class="nav-row">
+      ${history.length ? `<button class="back-btn" onclick="goBack()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg> Back</button>` : ''}
+    </div>
+  `;
+
+  buildTrail();
+}
+
+/* ── Objection drawer ── */
+function toggleDrawer() {
+  const d = document.getElementById('objDrawer');
+  d.classList.toggle('open');
+}
+
+function jumpDrawer(id) {
+  document.getElementById('objDrawer').classList.remove('open');
+  goTo(id);
+}
+
+// Close drawer on outside click
+document.addEventListener('click', e => {
+  const fab = document.getElementById('objFab');
+  const drawer = document.getElementById('objDrawer');
+  if (!fab.contains(e.target) && !drawer.contains(e.target)) {
+    drawer.classList.remove('open');
+  }
+});
+
+/* ── Tab switching ── */
+function switchTab(tab) {
+  const guidePanel = document.getElementById('panel-guide');
+  const productsPanel = document.getElementById('panel-products');
+  const tabGuide = document.getElementById('tab-guide');
+  const tabProducts = document.getElementById('tab-products');
+  const fab = document.getElementById('objFab');
+  const drawer = document.getElementById('objDrawer');
+
+  if (tab === 'guide') {
+    guidePanel.classList.remove('hidden');
+    productsPanel.classList.remove('active');
+    tabGuide.classList.add('active');
+    tabProducts.classList.remove('active');
+    fab.style.display = 'flex';
+  } else {
+    guidePanel.classList.add('hidden');
+    productsPanel.classList.add('active');
+    tabGuide.classList.remove('active');
+    tabProducts.classList.add('active');
+    fab.style.display = 'none';
+    drawer.classList.remove('open');
+  }
+}
+
+/* ── Init ── */
+render();
+</script>
+</body>
+</html>
