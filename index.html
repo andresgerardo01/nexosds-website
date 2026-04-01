@@ -1346,6 +1346,16 @@
       .feat-acc-body { max-height: none !important; overflow: visible !important; padding: 0 20px 18px !important; }
       .feat-acc-chevron { display: none !important; }
       .feat-card { transform: none !important; }
+      /* Disable button tap targets so scroll isn't intercepted */
+      .feat-acc-trigger { pointer-events: none !important; cursor: default !important; }
+
+      /* How-step cards — always show descriptions on mobile, no hover blocking */
+      .how-step-card:hover { border-color: rgba(255,255,255,0.06) !important; background: none !important; box-shadow: none !important; }
+      .how-step-card:hover::before { transform: scaleY(0) !important; }
+      .how-step-card:hover .how-step-num { background: rgba(61,219,184,0.08) !important; border-color: rgba(61,219,184,0.28) !important; }
+      .how-step-card:hover .how-step-arrow { opacity: 0.3 !important; color: var(--platinum-silver) !important; transform: none !important; }
+      .how-step-desc { max-height: none !important; opacity: 1 !important; margin-top: 10px !important; overflow: visible !important; }
+      .how-step-arrow { display: none !important; }
 
       /* Hero — allow full carousel visibility on mobile */
       #home { height: auto; min-height: 100svh; }
